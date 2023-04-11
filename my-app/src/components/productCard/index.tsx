@@ -56,5 +56,5 @@ export const ProductCard = ({ announcement }: IProductCardProps) => {
     );
   };
 
-
+export default ProductCard;
 
