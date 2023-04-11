@@ -26,16 +26,6 @@ const MobileMenu = () => {
             <li>
               <a href="/login">Fazer Login</a>
             </li>
-            <li>
-              <Button
-                backgroundColor="#FFFFFFFF"
-                backgroundColorHover="#F1F3F5"
-                border={"#ADB5BD"}
-                fontColor="#0B0D0D"
-              >
-                Cadastrar
-              </Button>
-            </li>
           </ul>
         </nav>
       </MenuDropdownSt>

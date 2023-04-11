@@ -1,28 +1,31 @@
-
-
 import Button from "../buttons";
-
-
 import MobileMenu from "../mobileMenu";
-
-
 import { DivNavBar, DivNavBarUser, Nav } from "./style";
 
-export const NavBar = () => { (
+const logo = require("../../assets/logo.png") as string;
+
+export const NavBar = () => { return (
     <>
       <Nav>
         <figure>
-          <img src="../../assets/logo.svg" alt="logo da empresa" />
+          <img src={logo} alt="logo da empresa" />
         </figure>
         <div className="navbar-teste">
           <DivNavBar>
-            <a href="#Carros">Carros</a>
-            <a href="#Motos">Motos</a>
-            <a href="#Leilão">Leilão</a>
+            
           </DivNavBar>
 
           <DivNavBarUser>
-            <span >Fazer login</span>
+          <Button
+              backgroundColor="#ffffff"
+              backgroundColorHover="#212529"
+              border="#212529"
+              fontColor="#212529"
+              fontColorHover="#ffffff"
+             
+            >
+              Fazer Login
+            </Button>
             <Button
               backgroundColor="#ffffff"
               backgroundColorHover="#212529"
