@@ -28,12 +28,13 @@ export const Nav = styled.nav`
 `;
 
 export const DivNavBarUser = styled.nav`
-  width: 100%;
+  width: 89%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
   margin: 0rem 1rem;
   span {
+    font-family: "Inter", sans-serif;
     color: var(--color-grey2);
     cursor: pointer;
     font-weight: 600;

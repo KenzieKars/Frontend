@@ -16,16 +16,11 @@ export const NavBar = () => { return (
           </DivNavBar>
 
           <DivNavBarUser>
-          <Button
-              backgroundColor="#ffffff"
-              backgroundColorHover="#212529"
-              border="#212529"
-              fontColor="#212529"
-              fontColorHover="#ffffff"
-             
-            >
+          <span>
+
               Fazer Login
-            </Button>
+          </span>
+            
             <Button
               backgroundColor="#ffffff"
               backgroundColorHover="#212529"

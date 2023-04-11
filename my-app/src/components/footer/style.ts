@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const ContainerF = styled.footer`
   width: 100%;
   div {
-    width: 100%;
+    width: 92%;
     height: 100px;
     display: flex;
     justify-content: space-between;
@@ -28,6 +28,7 @@ export const ContainerF = styled.footer`
   @media screen and (max-width: 425px) {
     div {
       gap: 5px;
+      display: grid;
     }
   }
 `;
