@@ -17,6 +17,7 @@ export const MenuDropdownSt = styled.div<MenuProps>`
   padding: 0 5%;
   justify-content: space-between;
   align-items: center;
+ 
   > img {
     cursor: pointer;
   }

@@ -27,11 +27,21 @@ function HomePage(){
                 >A melhor plataforma de anúncios de carros do país</ThemeTitle>
             </Container>
             <Main>
-                <Aside>
+                <Aside id="id">
+                    <div className="aside">
+
+                    <div className="divFechar">
+                    <ThemeTitle
+                        tag= "h2"
+                        className=""
+                        titleSize="Heading-7-500"
+                        >Filtro</ThemeTitle>
+                        <button>x</button>
+                    </div>
                     <ul>
                         <ThemeTitle
                         tag= "h2"
-                        className=""
+                        className="primeiro"
                         titleSize="Heading-4-600"
                         >Marca</ThemeTitle>
                         <li><button className="btn">General Motors</button></li>
@@ -160,6 +170,24 @@ function HomePage(){
                         Máximo</Button>
                         </div>
                     </ul>
+                    <Button
+                            backgroundColor= "var(--color-brand2)"
+                            border= ""
+                            backgroundColorHover= ""
+                            borderHover= ""
+                            fontColor= "white"
+                            fontColorHover= ""
+                            onClick={()=>{
+                                const aside = document.querySelector("#id")
+                                if(aside !== null){
+                                    aside.id = "t"
+                                }
+                            }}
+                            type="button"
+                            className="filtros"
+                            >
+                            Ver anúncios</Button>
+                    </div>
                 </Aside>
                 <Products>
                     <ProductContainer>
@@ -380,7 +408,12 @@ function HomePage(){
                             borderHover= ""
                             fontColor= "white"
                             fontColorHover= ""
-                            onClick={()=>{}}
+                            onClick={()=>{
+                                const aside = document.querySelector("#t")
+                                if(aside !== null){
+                                    aside.id = "id"
+                                }
+                            }}
                             type="button"
                             className="filtros"
                             >

@@ -50,6 +50,20 @@ export const Main = styled.main`
     width: 100%;
     position: relative;
     margin-bottom: 100px;
+    .fecha{
+      display: none;
+      
+    }
+    .teste{
+      display: flex;
+      
+    }
+    #id{
+      display: flex;
+    }
+    #t{
+      display: none;
+    }
 `
 
 export const Aside = styled.aside`       
@@ -95,8 +109,68 @@ export const Aside = styled.aside`
           color: var(--color-grey2);
         }
     }
+    .filtros{
+      margin: 0 auto;
+      padding: 30px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .divFechar{
+      display: none;
+      margin-top: 1250px;
+    }
     @media (max-width:980px){
       display: none;
+      border-top: 2px solid var(--color-grey6);
+      position: fixed;
+      z-index: 2;
+      background-color: white;
+      top: 50px;
+      right: 0;
+      max-width: 100%;
+      left: 0;
+      margin: 0 auto;
+      margin-top: 31px;
+      overflow: auto;
+      max-height: 90%;
+      ul{
+        margin-left: 15px;
+      }
+      li{
+        margin-left: 25px;
+      }
+      .divFechar{
+        display: flex;
+        margin-top: 1150px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        h2{
+          margin: 0;
+          margin-left: 15px;
+        }
+        button{
+          width: 50px;
+          border: none;
+          background-color: white;
+          color: #ADB5BD;
+          font-family: 'Lexend';
+          font-size: 25px;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+        }
+      }
+      .filtros{
+        margin: 0 auto;
+        margin-bottom: 40px;
+        width: 270px;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
     
 `
@@ -108,7 +182,7 @@ export const Products = styled.div`
     @media (max-width:980px){
       flex-wrap: nowrap;
       overflow: auto;
-      max-width: 519px;
+      max-width: 809px;
       margin-left: 20px;
     }
 `
