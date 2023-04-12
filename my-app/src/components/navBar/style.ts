@@ -2,18 +2,17 @@ import styled from "styled-components";
 
 export const Nav = styled.nav`
   background-color: var(--color-grey10);
-  width: 100%;
+  width: 100vw;
   height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 3rem;
   position: fixed;
   border-bottom: 2px solid var(--color-grey6);
   z-index: 3;
   figure {
-    margin-top: 1rem;
     cursor: pointer;
+    margin-left: 60px;
   }
   .navbar-teste {
     width: 60%;
@@ -28,11 +27,9 @@ export const Nav = styled.nav`
 `;
 
 export const DivNavBarUser = styled.nav`
-  width: 89%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  margin: 0rem 1rem;
   span {
     font-family: "Inter", sans-serif;
     color: var(--color-grey2);
@@ -42,6 +39,14 @@ export const DivNavBarUser = styled.nav`
       color: var(--color-brand1);
     }
   }
+  button{
+    margin-right: 30px;
+  }
+  .login{
+    margin-left: 20px;
+    margin-right: 10px;
+  }
+  
 `;
 
 export const DivNavBar = styled.nav`

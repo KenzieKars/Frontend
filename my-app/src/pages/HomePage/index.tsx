@@ -5,12 +5,13 @@ import { Container, Aside, Main, ProductContainer, ProductDetails, ProductOwner 
 import { ThemeTitle } from "../../styles/typography"
 import { Products } from "./style"
 import { Pagination } from "./style"
+import { Div } from "./style"
 
 const banner = require("../../assets/car.png") as string;
 
 function HomePage(){
     return(
-        <>
+        <Div>
             <NavBar/>
             <Container>
                 <img src={banner} alt="banner" />
@@ -371,13 +372,29 @@ function HomePage(){
                     </ProductContainer>
                 </Products>
             </Main>
+            <div className="filtro">
+                <Button
+                            backgroundColor= "var(--color-brand2)"
+                            border= ""
+                            backgroundColorHover= ""
+                            borderHover= ""
+                            fontColor= "white"
+                            fontColorHover= ""
+                            onClick={()=>{}}
+                            type="button"
+                            className="filtros"
+                            >
+                            Filtros</Button>
+            </div>
             <Pagination>
-                <span className="page">1</span>
-                <span>de 2</span>
+                <div>
+                    <span className="page">1</span>
+                    <span>de 2</span>
+                </div>
                 <button className="btn">Seguinte {'>'} </button>
             </Pagination>
             <Footer/>
-        </>
+        </Div>
     )
 }
 export default HomePage

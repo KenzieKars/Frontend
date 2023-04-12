@@ -10,19 +10,38 @@ export const Container = styled.div`
     position: relative;
     margin-bottom: 50px;
     flex-direction: column;
+    
     align-items: center;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.29) 0%, #000000 100%);
     img{
         position: absolute;
         z-index: -1;
+        width: 100%;
         max-width: 1268px;
         max-height: 521px;
-        min-width: 1268px;
-        min-height: 521px;
+  
     }
     h1{
         color: var(--color-grey10);
         margin-bottom: 20px;
+        text-align: center;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    
+`
+export const Div = styled.div`       
+    .filtro{
+      width: 100%;
+      display: none;
+      justify-content: center;
+      @media (max-width:980px){
+        display: flex;
+      }
+    }
+    .filtros{
+      width: 230px;
+      margin-bottom: 72px;
     }
 `
 export const Main = styled.main`       
@@ -31,7 +50,6 @@ export const Main = styled.main`
     width: 100%;
     position: relative;
     margin-bottom: 100px;
-    
 `
 
 export const Aside = styled.aside`       
@@ -56,6 +74,7 @@ export const Aside = styled.aside`
         height: 37px;
         padding: 0;
         margin-right: 26px;
+        margin-top: 16px;
     }
     .btn{
         border: none;
@@ -72,6 +91,12 @@ export const Aside = styled.aside`
         font-size: 20px;
         line-height: 25px;
         color: #868E96;
+        :hover {
+          color: var(--color-grey2);
+        }
+    }
+    @media (max-width:980px){
+      display: none;
     }
     
 `
@@ -79,6 +104,13 @@ export const Products = styled.div`
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
+
+    @media (max-width:980px){
+      flex-wrap: nowrap;
+      overflow: auto;
+      max-width: 519px;
+      margin-left: 20px;
+    }
 `
 export const Pagination = styled.div`
     width: 300px;
@@ -87,6 +119,9 @@ export const Pagination = styled.div`
     align-items: center;
     justify-content: center;
     margin-bottom: 80px;
+    div{
+      display: flex;
+    }
     span{
         font-family: 'Lexend';
         font-style: normal;
@@ -117,7 +152,16 @@ export const Pagination = styled.div`
         border: none;
         background-color: white;
         color: var(--color-brand2);
+        cursor: pointer;
         
+    }
+    @media (max-width:980px){
+      flex-direction: column;
+
+
+      button{
+        margin-top: 30px;
+      }
     }
 `
 
@@ -139,7 +183,9 @@ export const Pagination = styled.div`
 
 
 export const ProductContainer = styled.section`
-  width: 312px;
+  max-width: 312px;
+  min-width: 312px;
+
   display: flex;
   gap: 15px;
   flex-direction: column;
@@ -209,6 +255,7 @@ export const ProductContainer = styled.section`
       width: 0px;
     }
   }
+  
 `;
 
 export const ProductOwner = styled.div`

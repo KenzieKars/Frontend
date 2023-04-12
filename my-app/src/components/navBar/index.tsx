@@ -10,31 +10,32 @@ export const NavBar = () => { return (
         <figure>
           <img src={logo} alt="logo da empresa" />
         </figure>
-        <div className="navbar-teste">
-          <DivNavBar>
+        <DivNavBarUser>
+        <Button
+            backgroundColor="#ffffff"
+            backgroundColorHover="#212529"
+            border=""
+            fontColor="#495057"
+            fontColorHover="#ffffff"
+            className="login"
             
-          </DivNavBar>
-
-          <DivNavBarUser>
-          <span>
-
-              Fazer Login
-          </span>
+          >
+            Fazer Login
+          </Button>
+          
+          <Button
+            backgroundColor="#ffffff"
+            backgroundColorHover="#212529"
+            border="#ADB5BD"
+            fontColor="#212529"
+            fontColorHover="#ffffff"
             
-            <Button
-              backgroundColor="#ffffff"
-              backgroundColorHover="#212529"
-              border="#212529"
-              fontColor="#212529"
-              fontColorHover="#ffffff"
-             
-            >
-              Cadastrar
-            </Button>
-          </DivNavBarUser>
-        </div>
+          >
+            Cadastrar
+          </Button>
+        </DivNavBarUser>
       </Nav>
-      <MobileMenu />
+      <MobileMenu></MobileMenu>
     </>
   );
 };

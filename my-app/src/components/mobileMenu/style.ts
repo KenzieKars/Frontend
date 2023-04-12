@@ -20,6 +20,16 @@ export const MenuDropdownSt = styled.div<MenuProps>`
   > img {
     cursor: pointer;
   }
+  > button{
+    border: none;
+    background-color: white;
+  }
+  .btnMenu{
+    width:30px;
+  }
+  nav{
+    display: none;
+  }
   .open {
     display: flex;
     width: 300px;
