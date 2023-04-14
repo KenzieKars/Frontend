@@ -3,6 +3,14 @@ import styled from 'styled-components';
 export const StyledDivContentMain = styled.div`
 	display: flex;
 	justify-content: space-between;
+
+	@media (max-width: 768px) {
+		align-items: center;
+		flex-direction: column;
+		gap: 10px;
+
+		width: 100%;
+	}
 `;
 
 export const StyledDivInfo = styled.div`
@@ -17,6 +25,10 @@ export const StyledDivInfo = styled.div`
 	height: 880px;
 
 	border-radius: 4px;
+
+	@media (max-width: 768px) {
+		width: 100%;
+	}
 `;
 
 export const StyledDivBanner = styled.div`
@@ -107,6 +119,10 @@ export const StyledDivProfile = styled.div`
 
 	width: 35%;
 	height: fit-content;
+
+	@media (max-width: 768px) {
+		width: 100%;
+	}
 `;
 
 export const StyledDivAdPics = styled.div`
@@ -196,6 +212,10 @@ export const StyledDivInteraction = styled.div`
 		flex-direction: column;
 		gap: 36px;
 	}
+
+	@media (max-width: 768px) {
+		width: 100%;
+	}
 `;
 
 export const StyledNewComment = styled.div`
@@ -212,6 +232,10 @@ export const StyledNewComment = styled.div`
 
 	div:nth-child(2) {
 		position: relative;
+	}
+
+	@media (max-width: 768px) {
+		width: 100%;
 	}
 `;
 

@@ -35,4 +35,10 @@ export const StyledDivContent = styled.div`
 	width: 80%;
 	height: fit-content;
 	margin: 40px auto;
+
+	@media (max-width: 768px) {
+		align-items: center;
+
+		width: 90%;
+	}
 `;
