@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router"
 import HomePage from "../pages/HomePage"
 import RegisterPage from "../pages/Register"
 import LoginPage from "../pages/Login"
-
+import UserPage from "../pages/UserPage"
 
 
 
@@ -12,7 +12,7 @@ export const RoutesMain = () => {
             <Route path="/" element={<HomePage />}/>
             <Route path="/register" element={<RegisterPage/>}/>
             <Route path="/login" element={<LoginPage/>}/>
-
+            <Route path="/user" element={<UserPage/>}/>
         </Routes>
     )
 }
