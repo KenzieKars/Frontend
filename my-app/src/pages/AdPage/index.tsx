@@ -161,7 +161,6 @@ export const AdPage = () => {
 					</StyledProfileComment>
 					<div>
 						<StyledCommentTextarea
-							name="comment"
 							id="comment"
 							placeholder="Digitar comentário..."
 							rows={5}
