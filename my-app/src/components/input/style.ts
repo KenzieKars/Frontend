@@ -8,6 +8,7 @@ export const InputContainer = styled.div`
   label {
     font-weight: 500;
     font-size: 14px;
+    font-family: 'Inter';
   }
   input {
     width: 100%;

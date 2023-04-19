@@ -4,8 +4,8 @@ export const Div = styled.div`
     background-color: var(--color-grey8);
 `
 export const Container = styled.div`
-    width: 380px;
-    padding: 44px 48px;
+    width: 404px;
+    padding: 44px 6px;
     display: flex;
     align-items: flex-start;
     flex-direction: column;

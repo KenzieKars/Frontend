@@ -6,8 +6,8 @@ export const Div = styled.div`
 `
 
 export const Container = styled.div`
-    width: 380px;
-    padding: 44px 48px;
+    width: 404px;
+    padding: 44px 23px;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -36,15 +36,22 @@ export const Container = styled.div`
             align-self: end;
             color: var(--color-grey2);
             cursor: pointer;
+            font-family: 'Inter';
         }
         p {
             color: var(--color-grey2);
             font-size: 14px;
             align-self: center;
+            font-weight: 400;
+            font-family: 'Inter';
         }
         button {
-            width: 370px;
+            width: 100%;
         }
+
+        @media (min-width: 400px) {
+		display: none;
+	}
     }
 `
 
