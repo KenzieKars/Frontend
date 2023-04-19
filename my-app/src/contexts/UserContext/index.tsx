@@ -60,6 +60,7 @@ export const AuthProvider = ({ children }: IAuthContextProps) => {
   const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
 
   const login = (user: ILogin) => {
+
     api.post("/login", { ...user })
       .then((res) => {
         window.localStorage.clear();
@@ -68,7 +69,7 @@ export const AuthProvider = ({ children }: IAuthContextProps) => {
         const userId = decodedToken.sub;
         window.localStorage.setItem("@user:ID", userId);
         console.log("Login bem sucedido!");
-        navigate("/dashboard", { replace: true });
+        navigate("/", { replace: true });
       })
       .catch((err) => {
         console.log("Email ou senha inválidos!");
@@ -76,7 +77,7 @@ export const AuthProvider = ({ children }: IAuthContextProps) => {
   };
 
   const signUp = (user: ISignUp) => {
-    console.log("oi")
+    console.log(user)
     api.post("/users", { ...user })
       .then((res) => {
         console.log("Cadastro efetuado com sucesso");

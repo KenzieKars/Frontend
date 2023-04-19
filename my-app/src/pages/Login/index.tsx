@@ -9,17 +9,33 @@ import { useForm } from "react-hook-form"
 import { schema } from "../../serializers/login/login"
 import { useNavigate } from "react-router-dom"
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import jwtDecode from "jwt-decode";
+import { api } from "../../services/api"
 
 
 function LoginPage(){
-    const {  login } =
-    useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ILogin>({ resolver: yupResolver(schema) });
+  const login = (user: ILogin) => {
+
+    api.post("/login", { ...user })
+      .then((res) => {
+        window.localStorage.clear();
+        window.localStorage.setItem("@user:Token", res.data.token);
+        const decodedToken = jwtDecode(res.data.token) as any;
+        const userId = decodedToken.sub;
+        window.localStorage.setItem("@user:ID", userId);
+        console.log("Login bem sucedido!");
+        navigate("/", { replace: true });
+      })
+      .catch((err) => {
+        console.log("Email ou senha inválidos!");
+      });
+  };
 
   const navigate = useNavigate()
     return(
