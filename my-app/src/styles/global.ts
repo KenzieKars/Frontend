@@ -1,6 +1,6 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 
-const GlobalStyle = createGlobalStyle `
+const GlobalStyle = createGlobalStyle`
 :root{
     /* Colors */
 
@@ -35,18 +35,18 @@ const GlobalStyle = createGlobalStyle `
 
     /* Random */
 
-    --color- random1:#E34D8C;
-    --color- random2:#C04277;
-    --color- random3:#7D2A4D;
-    --color- random4:#7000FF;
-    --color- random5:#6200E3;
-    --color- random6:#6200E3;
-    --color- random7:#349974;
-    --color- random8:#2A7D5F;
-    --color- random9:#153D2E;
-    --color- random10:#6100FF;
-    --color- random11:#5700E3;
-    --color- random12:#30007D;
+    --color-random1:#E34D8C;
+    --color-random2:#C04277;
+    --color-random3:#7D2A4D;
+    --color-random4:#7000FF;
+    --color-random5:#6200E3;
+    --color-random6:#6200E3;
+    --color-random7:#349974;
+    --color-random8:#2A7D5F;
+    --color-random9:#153D2E;
+    --color-random10:#6100FF;
+    --color-random11:#5700E3;
+    --color-random12:#30007D;
 
     /* Font family */
 
@@ -67,6 +67,9 @@ const GlobalStyle = createGlobalStyle `
     --font-weight-500: 500;
     --font-weight-400: 400;
     --font-weight-500: 300;
+}
+* {
+    box-sizing: border-box;
 }
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -112,11 +115,5 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-`
+`;
 export default GlobalStyle;
-    
-
-
-
-
-
