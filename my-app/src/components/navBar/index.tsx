@@ -1,6 +1,6 @@
 import Button from "../buttons";
 import MobileMenu from "../mobileMenu";
-import { DivNavBar, DivNavBarUser, Nav } from "./style";
+import { DivNavBarUser, Nav } from "./style";
 
 const logo = require("../../assets/logo.png") as string;
 
