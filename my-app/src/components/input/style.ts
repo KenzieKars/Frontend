@@ -18,6 +18,9 @@ export const InputContainer = styled.div`
     font-size: 16px;
     border: 1.5px solid var(--color-grey8);
     border-radius: 4px;
+    @media (max-width: 425px) {
+        width: 73%;
+      }
     &:hover {
       background: var(--color-grey8);
     }

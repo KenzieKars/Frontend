@@ -19,7 +19,7 @@ function RegisterPage(){
   } = useForm<ISignUp>({ resolver: yupResolver(registerSchema) });
 
   const signUp = (user: ISignUp) => {
-    user.imagem = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Breezeicons-actions-22-im-user.svg/1200px-Breezeicons-actions-22-im-user.svg.png"
+    user.imagem = "asv"
     console.log(user)
     api.post("/users", { ...user })
       .then((res) => {

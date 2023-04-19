@@ -5,7 +5,7 @@ export const Div = styled.div`
 `
 export const Container = styled.div`
     width: 404px;
-    padding: 44px 6px;
+    padding: 44px 22px;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -15,6 +15,14 @@ export const Container = styled.div`
     margin-bottom: 50px;
     gap:32px;
     border-radius: 4px;
+    @media (max-width: 400px) {
+    width: 90%;
+    padding: 44px 38px;
+  }
+
+  form{
+    width: 100%;
+  }
     
     h1 {
         font-family: Lexend;
@@ -25,7 +33,8 @@ export const Container = styled.div`
 
     p {
         font-weight: 500;
-        font-size: 14px;   
+        font-size: 14px;
+        font-family:'Inter' ;
     }
 
     form{
@@ -47,10 +56,16 @@ export const Container = styled.div`
         width: 350px;
         height: 35px;
         margin-bottom: 20px;
+        @media (max-width: 400px) {
+        width: 100%;
+      }
     }
 
     button {
         width: 370px;
+        @media (max-width: 400px) {
+        width: 100%;
+      }
     }
 
     .conta {
@@ -76,8 +91,12 @@ export const Container = styled.div`
         height: 48px;
         position: relative;
         width: 152px;
-        border-radius: 4px;
+        border-radius: 2px;
+        @media (max-width: 425px) {
+        width: 44%;
+        }
     }
+
 
     .radio + .radio {
         margin-left: 25px;
@@ -97,13 +116,16 @@ export const Container = styled.div`
 
     .radio label span {
         z-index: 1;
+        font-family: 'Inter';
+        font-weight: 600;
+        font-size: 14px;
     }
     .radio label input[type=radio] {
         all: unset;
         position: absolute;
         width: 100%;
         height: 100%;
-        top: 0;
+        top:0;
         left: 0;
     }
     .radio label input[type=radio]:checked {
