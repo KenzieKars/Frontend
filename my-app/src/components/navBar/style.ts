@@ -1,6 +1,28 @@
 import styled from 'styled-components';
 
 export const Nav = styled.nav`
+	.none{
+		display: none;
+	}
+	.logado{
+		display: flex;
+		align-items: center;
+		margin-right: 80px;
+		margin-left: 100px;
+		img{
+			width: 30px;
+			border-radius: 50%;
+			margin-right: 15px;
+		}
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 28px;
+
+		color: #495057;
+		cursor: pointer;
+	}
 	background-color: var(--color-grey10);
 	width: 100vw;
 	height: 80px;
@@ -30,6 +52,8 @@ export const DivNavBarUser = styled.nav`
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
+	border-left: 2px solid #DEE2E6;
+	height: 100%;
 	span {
 		font-family: 'Inter', sans-serif;
 		color: var(--color-grey2);

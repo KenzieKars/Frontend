@@ -1,24 +1,20 @@
-import Button from '../../components/buttons';
-import NavBar from '../../components/navBar';
-import { Footer } from '../../components/footer';
-import {
-	Container,
-	Main,
-	ProductContainer,
-	ProductDetails,
-	ProductOwner,
-} from './style';
-import { DivNavBar, DivNavBarUser, Nav } from './style';
-import { ThemeTitle } from '../../styles/typography';
-import { Products } from './style';
-import { Pagination } from './style';
-import { Div } from './style';
-import MobileMenu from '../../components/mobileMenu';
-import { NewAdModal } from '../../components/modal';
-import { useState } from 'react';
+import Button from "../../components/buttons"
+import NavBar from "../../components/navBar"
+import { Footer } from "../../components/footer"
+import { Container, Main, ProductContainer, ProductDetails, ProductOwner } from "./style"
+import { DivNavBar, DivNavBarUser, Nav } from "./style";
+import { ThemeTitle } from "../../styles/typography"
+import { Products } from "./style"
+import { Pagination } from "./style"
+import { Div } from "./style"
+import MobileMenu from "../../components/mobileMenu";
+import { api } from "../../services/api";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const banner = require('../../assets/car.png') as string;
 const logo = require('../../assets/logo.png') as string;
+
 
 function UserPage() {
 	const [newAdModal, setNewAdModal] = useState(false);
@@ -640,5 +636,5 @@ function UserPage() {
 			{newAdModal && <NewAdModal setNewAdModal={setNewAdModal} />}
 		</Div>
 	);
-}
+
 export default UserPage;

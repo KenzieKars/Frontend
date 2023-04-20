@@ -1,134 +1,66 @@
-import Button from '../../components/buttons';
-import NavBar from '../../components/navBar';
-import { Footer } from '../../components/footer';
-import {
-	Container,
-	Aside,
-	Main,
-	ProductContainer,
-	ProductDetails,
-	ProductOwner,
-} from './style';
-import { ThemeTitle } from '../../styles/typography';
-import { Products } from './style';
-import { Pagination } from './style';
-import { Div } from './style';
+import Button from "../../components/buttons"
+import NavBar from "../../components/navBar"
+import { Footer } from "../../components/footer"
+import { Container, Aside, Main, ProductContainer, ProductDetails, ProductOwner } from "./style"
+import { ThemeTitle } from "../../styles/typography"
+import { Products } from "./style"
+import { Pagination } from "./style"
+import { Div } from "./style"
+import { useNavigate } from "react-router-dom"
+import { useState } from "react"
+import { useEffect } from "react"
+import { api } from "../../services/api"
 
-const banner = require('../../assets/car.png') as string;
+const banner = require("../../assets/car.png") as string;
+interface IUserInfo {
+    id: string  
+    nome: string
+    email: string              
+    telefone:string
+    bio:string
+    imagem:string
+    cpf:string
+    aniversario:string
+    vendedor?: boolean;
+}
 
-function HomePage() {
-	return (
-		<Div>
-			<NavBar />
-			<Container>
-				<img src={banner} alt="banner" />
-				<ThemeTitle tag="h1" className="" titleSize="Heading-1-700">
-					Motors Shop
-				</ThemeTitle>
-				<ThemeTitle tag="h1" className="" titleSize="Heading-2-600">
-					A melhor plataforma de anúncios de carros do país
-				</ThemeTitle>
-			</Container>
-			<Main>
-				<Aside id="id">
-					<div className="aside">
-						<div className="divFechar">
-							<ThemeTitle
-								tag="h2"
-								className=""
-								titleSize="Heading-7-500"
-							>
-								Filtro
-							</ThemeTitle>
-							<button>x</button>
-						</div>
-						<ul>
-							<ThemeTitle
-								tag="h2"
-								className="primeiro"
-								titleSize="Heading-4-600"
-							>
-								Marca
-							</ThemeTitle>
-							<li>
-								<button className="btn">General Motors</button>
-							</li>
-							<li>
-								<button className="btn">Fiat</button>
-							</li>
-							<li>
-								<button className="btn">Ford</button>
-							</li>
-							<li>
-								<button className="btn">Honda</button>
-							</li>
-							<li>
-								<button className="btn">Porsche</button>
-							</li>
-							<li>
-								<button className="btn">Volswagen</button>
-							</li>
-						</ul>
-						<ul>
-							<ThemeTitle
-								tag="h2"
-								className=""
-								titleSize="Heading-4-600"
-							>
-								Modelo
-							</ThemeTitle>
-							<li>
-								<button className="btn">Civic</button>
-							</li>
-							<li>
-								<button className="btn">Corolla</button>
-							</li>
-							<li>
-								<button className="btn">Cruze</button>
-							</li>
-							<li>
-								<button className="btn">Fit</button>
-							</li>
-							<li>
-								<button className="btn">Gol</button>
-							</li>
-							<li>
-								<button className="btn">Ka</button>
-							</li>
-							<li>
-								<button className="btn">Onix</button>
-							</li>
-							<li>
-								<button className="btn">Porsche 718</button>
-							</li>
-						</ul>
-						<ul>
-							<ThemeTitle
-								tag="h2"
-								className=""
-								titleSize="Heading-4-600"
-							>
-								Cor
-							</ThemeTitle>
-							<li>
-								<button className="btn">Azul</button>
-							</li>
-							<li>
-								<button className="btn">Branca</button>
-							</li>
-							<li>
-								<button className="btn">Cinza</button>
-							</li>
-							<li>
-								<button className="btn">Prata</button>
-							</li>
-							<li>
-								<button className="btn">Preta</button>
-							</li>
-							<li>
-								<button className="btn">Verde</button>
-							</li>
-						</ul>
+function HomePage(){
+    const navigate = useNavigate()
+    const userId = localStorage.getItem("@user:ID")
+    const token = localStorage.getItem("@user:Token")
+    const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
+
+    useEffect(() => {
+        api.get(`/users/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then((res) => {
+              setUserInfo(res.data.foundUserByParam);
+          })
+          .catch((err) => {
+            window.localStorage.clear();
+          });
+    }, []);
+
+    return(
+        <Div>
+            <NavBar/>
+            <Container>
+                <img src={banner} alt="banner" />
+                <ThemeTitle
+                    tag= "h1"
+                    className=""
+                    titleSize="Heading-1-700"
+                >Motors Shop</ThemeTitle>
+                <ThemeTitle
+                    tag= "h1"
+                    className=""
+                    titleSize="Heading-2-600"
+                >A melhor plataforma de anúncios de carros do país</ThemeTitle>
+            </Container>
+            <Main>
+                <Aside id="id">
+                    <div className="aside">
 
 						<ul>
 							<ThemeTitle
