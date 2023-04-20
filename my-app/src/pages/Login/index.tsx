@@ -65,7 +65,7 @@ function LoginPage(){
                     borderHover= ""
                     fontColor= "var(--color-grey0)"
                     fontColorHover= ""
-                    onClick={()=>{}}
+                    onClick={()=>{navigate("/register")}}
                     type="button"
                     className="">Cadastrar</Button>
                 </form>
