@@ -20,8 +20,19 @@ function RegisterPage(){
 
   const signUp = (user: ISignUp) => {
     user.imagem = "asv"
-    console.log(user)
-    api.post("/users", { ...user })
+    const cpf = user.cpf.replaceAll(".","").replaceAll("-","")
+    const data = {
+      aniversario: user.aniversario.replaceAll("-","/"),
+      bio: user.bio,
+      cpf: cpf,
+      email: user.email,
+      imagem: user.imagem,
+      nome: user.nome,
+      senha: user.senha,
+      telefone: user.telefone
+    }
+
+    api.post("/users", { ...data })
       .then((res) => {
         console.log("Cadastro efetuado com sucesso");
       })
@@ -79,9 +90,9 @@ function RegisterPage(){
                     <br />
                     <br />
                     <br />
-                    <Input label="Senha" fieldName="senha" placeholder="Digitar senha"{...register('senha')}/>
+                    <Input  type="password" label="Senha" fieldName="senha" placeholder="Digitar senha"{...register("senha")}/>
                     <p>{errors.senha?.message}</p>
-                    <Input label="Confirmar Senha" fieldName="confirmarSenha" placeholder="Digitar senha"{...register('senha')}/>
+                    <Input  type="password" label="Confirmar Senha" fieldName="confirmarSenha" placeholder="Digitar senha"{...register('senha')}/>
                     <p>{errors.senha?.message}</p>
                     <Button backgroundColor="var(--color-brand1)"
                     border= ""

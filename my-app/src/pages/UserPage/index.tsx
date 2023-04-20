@@ -27,6 +27,37 @@ interface IUserInfo {
     aniversario:string
     vendedor?: boolean;
 }
+interface IAnuncioInfo{
+    id: string,
+    marca: string,
+    modelo:string,
+    ano: string,
+    combustivel: string,
+    cor: string,
+    quilometragem: number,
+    preco: number,
+    descricao: string,
+    imagens: Array<string>,
+    ativo: boolean,
+    criadoEm: string,
+    atualizadoEm: string,
+    user: {
+        id: string,
+        email: string,
+        nome: string,
+        telefone: 123,
+        bio: string,
+        imagem: string,
+        criadoEm: string,
+        atualizadoEm: string,
+        cpf: 109,
+        aniversario: string,
+        vendedor: boolean,
+        senha: string,
+        isActive: boolean
+		
+	}
+}
 
 function UserPage() {
 	const [newAdModal, setNewAdModal] = useState(false);
@@ -123,14 +154,14 @@ function UserPage() {
 			</ThemeTitle>
 			<Main>
 				<Products>
-                    {anunciosInfo.map((anuncio)=>{
+                    {anunciosInfo.map((anuncio: IAnuncioInfo)=>{
                         console.log(anuncio)
                         return(
                             <ProductContainer>
 						<div>
 							<img
 								className="product-img"
-								src={anuncio.imagem? anuncio.imagem :"https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled.png"}
+								src={anuncio.imagens? anuncio.imagens[0] :"https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled.png"}
 								alt="anuncio"
 							/>
 						</div>
