@@ -14,7 +14,7 @@ export const Container = styled.div`
   background-color: var(--color-grey10);
   margin: 0 auto;
   margin-top: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 200px;
   gap: 32px;
   border-radius: 4px;
   @media (max-width: 425px) {

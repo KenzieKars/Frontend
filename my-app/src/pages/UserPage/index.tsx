@@ -8,21 +8,69 @@ import { Products } from "./style"
 import { Pagination } from "./style"
 import { Div } from "./style"
 import MobileMenu from "../../components/mobileMenu";
+import { api } from "../../services/api";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const banner = require("../../assets/car.png") as string;
 const logo = require("../../assets/logo.png") as string;
 
+interface IUserInfo {
+    id: string  
+    nome: string
+    email: string              
+    telefone:string
+    bio:string
+    imagem:string
+    cpf:string
+    aniversario:string
+    vendedor?: boolean;
+}
+
 function UserPage(){
+    const navigate = useNavigate()
+    const userId = localStorage.getItem("@user:ID")
+    const token = localStorage.getItem("@user:Token")
+    if(!token){
+        navigate("/")
+    }
+    const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
+    const [advertisementInfo, setAdvertisementInfo] = useState([]);
+    useEffect(() => {
+          api.get(`/users/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+            .then((res) => {
+                setUserInfo(res.data.foundUserByParam);
+            })
+            .catch((err) => {
+              window.localStorage.clear();
+              console.log("/login");
+            });
+      }, []);
+
+      useEffect(() => {
+        api.get(`/advertisement`)
+          .then((res) => {
+              console.log(res.data)
+              console.log(userId)
+              console.log(res.data.filter(anuncio => anuncio.id === userId))
+              setAdvertisementInfo(res.data)
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    }, []);
 
     return(
         <Div>
             <Nav>
                 <figure>
-                <img src={logo} alt="logo da empresa" />
+                <img src={logo} alt="logo da empresa" onClick={()=>{navigate("/")}}/>
                 </figure>
                 <DivNavBarUser>
                     <img src="https://cdn-icons-png.flaticon.com/512/21/21104.png" alt="user" />
-                    <p>Nome usuario</p>
+                    <p>{userInfo.nome}</p>
                 </DivNavBarUser>
             </Nav>
             <MobileMenu></MobileMenu>
@@ -31,11 +79,11 @@ function UserPage(){
                 <img src="https://cdn-icons-png.flaticon.com/512/21/21104.png" alt="user" />
                 <div>
                     <ThemeTitle tag="h2" className="product-title" titleSize="Heading-6-600">
-                        Nome usuario
+                        {userInfo.nome}
                     </ThemeTitle>
                     <span>Anunciante</span>
                 </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto quis neque optio, ea mollitia non id voluptates eum consequatur, nulla, numquam voluptas accusantium consectetur similique iste adipisci maxime? Debitis, id.</p>
+                <p>{userInfo.bio}</p>
                 <Button
                     backgroundColor= "#FDFDFD"
                     border= "1.5px solid #4529E6"

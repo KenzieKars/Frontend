@@ -6,10 +6,42 @@ import { ThemeTitle } from "../../styles/typography"
 import { Products } from "./style"
 import { Pagination } from "./style"
 import { Div } from "./style"
+import { useNavigate } from "react-router-dom"
+import { useState } from "react"
+import { useEffect } from "react"
+import { api } from "../../services/api"
 
 const banner = require("../../assets/car.png") as string;
+interface IUserInfo {
+    id: string  
+    nome: string
+    email: string              
+    telefone:string
+    bio:string
+    imagem:string
+    cpf:string
+    aniversario:string
+    vendedor?: boolean;
+}
 
 function HomePage(){
+    const navigate = useNavigate()
+    const userId = localStorage.getItem("@user:ID")
+    const token = localStorage.getItem("@user:Token")
+    const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
+
+    useEffect(() => {
+        api.get(`/users/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then((res) => {
+              setUserInfo(res.data.foundUserByParam);
+          })
+          .catch((err) => {
+            window.localStorage.clear();
+          });
+    }, []);
+
     return(
         <Div>
             <NavBar/>
