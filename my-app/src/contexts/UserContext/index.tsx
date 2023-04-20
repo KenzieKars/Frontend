@@ -127,3 +127,4 @@ export const AuthProvider = ({ children }: IAuthContextProps) => {
     </AuthContext.Provider>
   );
 };
+
