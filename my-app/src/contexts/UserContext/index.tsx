@@ -34,7 +34,7 @@ export interface ISignUp {
     imagem:string
     cpf:string
     aniversario:string
-    vendedor?: boolean;
+    vendedor?: string;
 }
 
 interface IAuthContext {

@@ -21,6 +21,12 @@ function RegisterPage(){
   const signUp = (user: ISignUp) => {
     user.imagem = "asv"
     const cpf = user.cpf.replaceAll(".","").replaceAll("-","")
+    let bol = false
+
+    if(user.vendedor === "anunciante"){
+      bol = true
+    }
+
     const data = {
       aniversario: user.aniversario.replaceAll("-","/"),
       bio: user.bio,
@@ -29,16 +35,17 @@ function RegisterPage(){
       imagem: user.imagem,
       nome: user.nome,
       senha: user.senha,
-      telefone: user.telefone
+      telefone: user.telefone,
+      vendedor: bol
     }
 
-    api.post("/users", { ...data })
+    /* api.post("/users", { ...data })
       .then((res) => {
         console.log("Cadastro efetuado com sucesso");
       })
       .catch((err) => {
         console.log(err);
-      });
+      }); */
   };
   const navigate = useNavigate()
 
@@ -72,7 +79,7 @@ function RegisterPage(){
                     <div className="input-option356">
                         <div className="radio">
                             <label>
-                                <input type="radio" id="comprador" name="tipoConta" value="comprador" checked/>
+                                <input type="radio" id="comprador"  value="comprador" checked {...register('vendedor')}/>
                                 <span>Comprador</span>
                             </label>
 
@@ -80,7 +87,7 @@ function RegisterPage(){
                         
                         <div className="radio">
                             <label>
-                                <input type="radio" id="anunciante" name="tipoConta" value="anunciante"/>
+                                <input type="radio" id="anunciante"  value="anunciante"  {...register('vendedor')}/>
                                 <span>Anunciante</span>
                             </label>
                         </div>

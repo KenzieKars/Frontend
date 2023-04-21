@@ -11,5 +11,6 @@ export const registerSchema = yup.object().shape({
     ,
     imagem: yup.string(),
     cpf: yup.string().required('Campo obrigatório!'),
-    aniversario: yup.string().required('Campo obrigatório!')
+    aniversario: yup.string().required('Campo obrigatório!'),
+    vendedor: yup.string()
 })
