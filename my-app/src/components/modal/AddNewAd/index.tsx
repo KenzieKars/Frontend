@@ -1,6 +1,5 @@
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
 	DivButtonsModal,
@@ -11,29 +10,46 @@ import {
 	StyledForm,
 	StyledModal,
 	StyledOverlay,
-} from './style';
-import { Input } from '../input';
-import Button from '../buttons';
-import { ThemeTitle } from '../../styles/typography';
-
-const schema = yup.object({});
+} from '../style';
+import { Input } from '../../input';
+import Button from '../../buttons';
+import { ThemeTitle } from '../../../styles/typography';
+import { schema } from '../../../serializers/newAd/newAd';
+import { AdContext, INewAd } from '../../../contexts/AdContext';
 
 interface IProps {
 	setNewAdModal: React.Dispatch<React.SetStateAction<boolean>>;
+	setConfirmNewAdModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const NewAdModal = (props: IProps) => {
-	const { setNewAdModal } = props;
+	const { setNewAdModal, setConfirmNewAdModal } = props;
+
+	const { addNewAd } = useContext(AdContext);
+
+	const [mainImage, setMainImage] = useState('');
+	const [firstImage, setFirstImage] = useState('');
+	const [secondImage, setSecondImage] = useState('');
+
+	const handleClick = async () => {
+		const dataForm = getValues();
+		const images = [mainImage, firstImage, secondImage];
+		const newAd: INewAd = { ...dataForm, imagens: images };
+
+		const createdNewAd = await addNewAd(newAd);
+		console.log(createdNewAd);
+		createdNewAd?.id && setNewAdModal(false);
+		createdNewAd?.id && setConfirmNewAdModal(true);
+	};
 
 	const contentRef = useRef<HTMLDivElement>(null);
 
-	const addNewAd = () => {};
-
 	const {
 		register,
+		getValues,
 		handleSubmit,
 		formState: { errors },
-	} = useForm({
+	} = useForm<INewAd>({
 		resolver: yupResolver(schema),
 	});
 
@@ -91,12 +107,15 @@ export const NewAdModal = (props: IProps) => {
 							fieldName="brand"
 							type="text"
 							placeholder="Mercedes Benz"
+							{...register('marca')}
 						/>
+						<p>{errors.marca?.message}</p>
 						<Input
 							label="Modelo"
 							fieldName="model"
 							type="text"
 							placeholder="A 200 CGI ADVANCE SEDAN"
+							{...register('modelo')}
 						/>
 						<StyledDivInputs>
 							<Input
@@ -104,24 +123,28 @@ export const NewAdModal = (props: IProps) => {
 								fieldName="year"
 								type="text"
 								placeholder="2018"
+								{...register('ano')}
 							/>
 							<Input
 								label="Combustível"
 								fieldName="fuel"
 								type="text"
 								placeholder="Gasolina / Etanol"
+								{...register('combustivel')}
 							/>
 							<Input
 								label="Quilometragem"
 								fieldName="mileage"
 								type="text"
 								placeholder="30.000"
+								{...register('quilometragem')}
 							/>
 							<Input
 								label="Cor"
 								fieldName="color"
 								type="text"
 								placeholder="Branco"
+								{...register('cor')}
 							/>
 							<Input
 								label="Preço tabela FIPE"
@@ -134,35 +157,40 @@ export const NewAdModal = (props: IProps) => {
 								fieldName="price"
 								type="text"
 								placeholder="R$ 50.000,00"
+								{...register('preco')}
 							/>
 						</StyledDivInputs>
-						<label htmlFor="description">
-							<span>Descrição</span>
-							<StyledDescriptionTextarea
-								id="description"
-								placeholder="Digitar descrição..."
-								cols={30}
-								rows={10}
-								maxLength={800}
-							></StyledDescriptionTextarea>
-						</label>
+
+						<Input
+							label="Descrição"
+							fieldName="description"
+							placeholder="Digitar descrição..."
+							{...register('descricao')}
+						/>
+
 						<Input
 							label="Imagem da capa"
 							fieldName="mainImage"
 							type="text"
 							placeholder="https://image.com"
+							value={mainImage}
+							onChange={(e) => setMainImage(e.target.value)}
 						/>
 						<Input
 							label="1ª Imagem da galeria"
 							fieldName="firstImage"
 							type="text"
 							placeholder="https://image.com"
+							value={firstImage}
+							onChange={(e) => setFirstImage(e.target.value)}
 						/>
 						<Input
 							label="2ª Imagem da galeria"
 							fieldName="secondImage"
 							type="text"
 							placeholder="https://image.com"
+							value={secondImage}
+							onChange={(e) => setSecondImage(e.target.value)}
 						/>
 						<Button
 							backgroundColor="var(--color-brand4)"
@@ -185,7 +213,9 @@ export const NewAdModal = (props: IProps) => {
 								borderHover="transparent"
 								fontColor="var(--color-grey2)"
 								fontColorHover="var(--color-grey0)"
-								onClick={() => {}}
+								onClick={() => {
+									setNewAdModal(false);
+								}}
 								type="button"
 								className=""
 							>
@@ -198,8 +228,10 @@ export const NewAdModal = (props: IProps) => {
 								borderHover=""
 								fontColor="var(--color-brand4)"
 								fontColorHover="var(--color-whiteFixed)"
-								onClick={() => {}}
-								type="button"
+								onClick={() => {
+									handleClick();
+								}}
+								type="submit"
 								className=""
 							>
 								Criar anúncio

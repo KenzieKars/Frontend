@@ -27,7 +27,8 @@ export const StyledContent = styled.div`
 	gap: 10px;
 
 	width: 520px;
-	height: 90vh;
+	height: fit-content;
+	max-height: 90vh;
 	padding: 20px;
 
 	border-radius: 8px;
