@@ -167,7 +167,6 @@ function UserPage() {
 			<Main>
 				<Products>
 					{anunciosInfo.map((anuncio: IAnuncioInfo) => {
-						console.log(anuncio);
 						return (
 							<ProductContainer>
 								<div>

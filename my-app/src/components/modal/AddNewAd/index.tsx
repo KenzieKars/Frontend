@@ -5,7 +5,7 @@ import {
 	DivButtonsModal,
 	DivHeaderModal,
 	StyledContent,
-	StyledDescriptionTextarea,
+	// StyledDescriptionTextarea,
 	StyledDivInputs,
 	StyledForm,
 	StyledModal,
@@ -25,11 +25,39 @@ interface IProps {
 export const NewAdModal = (props: IProps) => {
 	const { setNewAdModal, setConfirmNewAdModal } = props;
 
-	const { addNewAd } = useContext(AdContext);
+	const { brands, selectedModel, modelsByBrand, modelData, addNewAd } =
+		useContext(AdContext);
+
+	const [models, setModels] = useState<string[] | undefined>([]);
+	const [selectedBrand, setSelectedBrand] = useState('');
 
 	const [mainImage, setMainImage] = useState('');
 	const [firstImage, setFirstImage] = useState('');
 	const [secondImage, setSecondImage] = useState('');
+
+	const handleBrandChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
+		const { value } = evt.target;
+
+		setSelectedBrand(value);
+
+		handleModels(evt);
+	};
+
+	const handleModels = async (evt: React.ChangeEvent<HTMLSelectElement>) => {
+		const { value } = evt.target;
+
+		const res = await modelsByBrand(value);
+
+		setModels(res);
+	};
+
+	const handleModelData = async (
+		evt: React.ChangeEvent<HTMLSelectElement>
+	) => {
+		const { value } = evt.target;
+
+		await modelData(selectedBrand, value);
+	};
 
 	const handleClick = async () => {
 		const dataForm = getValues();
@@ -37,12 +65,10 @@ export const NewAdModal = (props: IProps) => {
 		const newAd: INewAd = { ...dataForm, imagens: images };
 
 		const createdNewAd = await addNewAd(newAd);
-		console.log(createdNewAd);
+
 		createdNewAd?.id && setNewAdModal(false);
 		createdNewAd?.id && setConfirmNewAdModal(true);
 	};
-
-	const contentRef = useRef<HTMLDivElement>(null);
 
 	const {
 		register,
@@ -52,6 +78,8 @@ export const NewAdModal = (props: IProps) => {
 	} = useForm<INewAd>({
 		resolver: yupResolver(schema),
 	});
+
+	const contentRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const handleOutclick = (evt: MouseEvent) => {
@@ -94,7 +122,7 @@ export const NewAdModal = (props: IProps) => {
 							X
 						</Button>
 					</DivHeaderModal>
-					<StyledForm onSubmit={handleSubmit(addNewAd)}>
+					<StyledForm onSubmit={handleSubmit(handleClick)}>
 						<ThemeTitle
 							tag="h2"
 							className=""
@@ -102,34 +130,63 @@ export const NewAdModal = (props: IProps) => {
 						>
 							Infomações do veículo
 						</ThemeTitle>
-						<Input
-							label="Marca"
-							fieldName="brand"
-							type="text"
-							placeholder="Mercedes Benz"
+						<label htmlFor="brand">Marca</label>
+
+						<select
+							id="brand"
 							{...register('marca')}
-						/>
-						<p>{errors.marca?.message}</p>
-						<Input
-							label="Modelo"
-							fieldName="model"
-							type="text"
-							placeholder="A 200 CGI ADVANCE SEDAN"
+							onChange={handleBrandChange}
+						>
+							<option value="empty">Selecione uma marca</option>
+							{brands?.map((brand, index) => (
+								<option value={brand} key={index}>
+									{brand.replace(/^[a-z]/, (letter) =>
+										letter.toUpperCase()
+									)}
+								</option>
+							))}
+						</select>
+						<label htmlFor="model">Modelo</label>
+						<select
+							id="model"
 							{...register('modelo')}
-						/>
+							onChange={handleModelData}
+							disabled={
+								selectedBrand === 'empty' || !selectedBrand
+							}
+						>
+							<option value="empty">Selecione um modelo</option>
+							{models?.map((model, index) => (
+								<option value={model} key={index}>
+									{model.replace(/^[a-z]/, (letter) =>
+										letter.toUpperCase()
+									)}
+								</option>
+							))}
+						</select>
 						<StyledDivInputs>
 							<Input
 								label="Ano"
 								fieldName="year"
 								type="text"
-								placeholder="2018"
+								placeholder={selectedModel?.year ?? '-'}
+								disabled
 								{...register('ano')}
 							/>
 							<Input
 								label="Combustível"
 								fieldName="fuel"
 								type="text"
-								placeholder="Gasolina / Etanol"
+								placeholder={
+									selectedModel?.fuel === 1
+										? 'Flex'
+										: selectedModel?.fuel === 2
+										? 'Híbrido'
+										: selectedModel?.fuel === 3
+										? 'Elétrico'
+										: '-'
+								}
+								disabled
 								{...register('combustivel')}
 							/>
 							<Input
@@ -150,7 +207,12 @@ export const NewAdModal = (props: IProps) => {
 								label="Preço tabela FIPE"
 								fieldName="fipePrice"
 								type="text"
-								placeholder="R$ 48.000,00"
+								placeholder={`R$ ${
+									selectedModel
+										? selectedModel?.value.toString()
+										: '00.000'
+								},00`}
+								disabled
 							/>
 							<Input
 								label="Preço"
