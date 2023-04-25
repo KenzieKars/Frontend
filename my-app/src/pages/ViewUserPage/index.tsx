@@ -17,11 +17,7 @@ import MobileMenu from '../../components/mobileMenu';
 import { api } from '../../services/api';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { NewAdModal } from '../../components/modal/AddNewAd';
-import { ConfirmNewAdModal } from '../../components/modal/NewAdConfirm';
-
-const banner = require('../../assets/car.png') as string;
-const logo = require('../../assets/logo.png') as string;
+import { useParams } from 'react-router-dom';
 
 interface IUserInfo {
 	id: string;
@@ -65,34 +61,34 @@ interface IAnuncioInfo {
 	};
 }
 
-function ViewUserPage(ID: string) {
+function ViewUserPage() {
+	const { id } = useParams();
 	const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
 	const [anunciosInfo, setAnuncioInfo] = useState([]);
 	const token: string | null = localStorage.getItem('@user:Token');
 	const userId: string | null = localStorage.getItem('@user:ID');
 	const navigate = useNavigate();
-	if (!token) {
-		navigate('/');
-	}
 	useEffect(() => {
+		if(!token){
+			navigate('/');
+		}
 		token &&
 			api
-				.get(`/users/${ID}`, {
+				.get(`/users/${id}`, {
 					headers: { Authorization: `Bearer ${token}` },
 				})
 				.then((res) => {
 					setUserInfo(res.data.foundUserByParam);
 				})
 				.catch((err) => {
-					window.localStorage.clear();
-					navigate('/login');
+					console.log(err)
 				});
 	}, []);
 
 	useEffect(() => {
 		token &&
 			api
-				.get(`/advertisement/users/${ID}`, {
+				.get(`/advertisement/users/${id}`, {
 					headers: { Authorization: `Bearer ${token}` },
 				})
 				.then((res) => {
@@ -106,7 +102,6 @@ function ViewUserPage(ID: string) {
 	return (
 		<Div>
 			<NavBar/>
-			<MobileMenu></MobileMenu>
 			<Container />
 			<div className="userData">
 				<img
@@ -133,7 +128,6 @@ function ViewUserPage(ID: string) {
 			<Main>
 				<Products>
 					{anunciosInfo.map((anuncio: IAnuncioInfo) => {
-						console.log(anuncio);
 						return (
 							<ProductContainer>
 								<div>

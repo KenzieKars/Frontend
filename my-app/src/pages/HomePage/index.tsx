@@ -241,7 +241,6 @@ function HomePage(){
                 </Aside>
                 <Products>
 					{anunciosInfo.map((anuncio: IAnuncioInfo) => {
-						console.log(anuncio);
 						return (
 							<ProductContainer>
                                 <div className="selectProduct" onClick={()=>{navigate("/adpage")}}>
@@ -268,15 +267,16 @@ function HomePage(){
                                     </div>
                                 </div>
 
-								<ProductOwner>
+								<ProductOwner onClick={()=>{
+                                    navigate(`/user-view/${anuncio.user.id}`)
+                                }}>
 									<img
 										className="owner-avatar"
 										src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
 										alt="user"
 									/>
 									<span className="owner-name">
-                                        Usuario
-										{/* {anuncio.user.nome} */}
+										{anuncio.user.nome}
 									</span>
 								</ProductOwner>
 
