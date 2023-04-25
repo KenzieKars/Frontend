@@ -259,22 +259,42 @@ export const Pagination = styled.div`
 export const ProductContainer = styled.section`
   max-width: 312px;
   min-width: 312px;
-
+  margin-right: 40px;
+  margin-bottom: 80px;
   display: flex;
   gap: 15px;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
-  padding: 20px;
+  h2{
+    margin-top: 16px;
+    margin-right: 10px;
+    margin-bottom: 16px;
+  }
+  p{
+    margin-top: 16px;
+    margin-right: 10px;
+  }
   .selectProduct{
     cursor: pointer;
+  }
+  .product-price{
+    margin-top: 20px;
+  
+  }
+  .product-year{
+    margin-top: 16px;
+    margin-right: 0;
   }
   .product-img {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 150px;
+    height: 100%;
     width: 100%;
+    width: 312px;
+    height: 152px;
+
     background-color: var(--color-grey7);
     border: 2px solid var(--color-grey7);
     overflow: hidden;

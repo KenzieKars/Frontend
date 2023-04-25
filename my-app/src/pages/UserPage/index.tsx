@@ -192,16 +192,6 @@ function UserPage() {
 									<p>{anuncio.descricao}</p>
 								</div>
 
-								<ProductOwner>
-									<img
-										className="owner-avatar"
-										src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-										alt="user"
-									/>
-									<span className="owner-name">
-										{anuncio.user.nome}
-									</span>
-								</ProductOwner>
 
 								<ProductDetails>
 									<div className="product-details">
