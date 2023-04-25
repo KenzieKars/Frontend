@@ -1,36 +1,21 @@
 import styled from "styled-components";
 
-
-
 export const Container = styled.div`       
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 550px;
+    height: 350px;
     position: relative;
-    margin-bottom: 50px;
+    margin-bottom: 220px;
     flex-direction: column;
     
     align-items: center;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.29) 0%, #000000 100%);
-    img{
-        position: absolute;
-        z-index: -1;
-        width: 100%;
-        max-width: 1268px;
-        max-height: 521px;
-  
-    }
-    h1{
-        color: var(--color-grey10);
-        margin-bottom: 20px;
-        text-align: center;
-        margin-left: 20px;
-        margin-right: 20px;
-    }
+    background: #4529E6;
+
     
 `
-export const Div = styled.div`       
+export const Div = styled.div`
+    background: #F1F3F5;       
     .filtro{
       width: 100%;
       display: none;
@@ -43,6 +28,77 @@ export const Div = styled.div`
       width: 230px;
       margin-bottom: 72px;
     }
+    .userData{
+        width: 90%;
+        max-width: 1240px;
+        background: #FDFDFD;
+        position: absolute;
+
+        z-index: 1;
+        margin: 0 auto;
+        top: 200px;
+        left: 0;
+        right: 0;
+        border-radius: 4px;
+        div{
+            display: flex;
+            margin-bottom: 24px;
+            align-items: center;
+        }
+        img{
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 1px solid black;
+            margin-left: 40px;
+            margin-top: 40px;
+            margin-bottom: 24px;
+        }
+        h2{
+            margin-left: 40px; 
+            margin-right: 20px; 
+ 
+        }
+        p{
+            margin-left: 40px; 
+            margin-right: 15px; 
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 28px;
+            margin-bottom: 30px;
+            color: #495057;
+
+        }
+        span{
+            width: 92px;
+            height: 32px;
+            left: 180px;
+            top: 169px;
+            background: #EDEAFD;
+            border-radius: 4px;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4529E6;
+        }
+    }
+    .anuncios{
+        margin-left: 50px;
+        margin-bottom: 80px;
+    }
+    .criarAnuncios{
+        border: 1.5px solid #4529E6;
+        margin-left: 40px;
+        margin-bottom: 40px;
+    }
+
 `
 export const Main = styled.main`       
     display: flex;
@@ -50,6 +106,8 @@ export const Main = styled.main`
     width: 100%;
     position: relative;
     margin-bottom: 100px;
+
+    
     .fecha{
       display: none;
       
@@ -66,118 +124,11 @@ export const Main = styled.main`
     }
 `
 
-export const Aside = styled.aside`       
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 310px;
-    position: relative;
-    flex-direction: column;
-    margin-left: 30px;
-    h2{
-        margin-bottom: 15px;
-    }
-    ul{
-        margin-bottom: 39px;
-    }
-    li{
-        margin-left: 10px;
-    }
-    button{
-        width: 125px;
-        height: 37px;
-        padding: 0;
-        margin-right: 26px;
-        margin-top: 16px;
-    }
-    .btn{
-        border: none;
-        background-color: white;
-        cursor: pointer;
-        display: flex;
-        height: 20px;
-        width: 160px;
-        margin-bottom: 5px;
-        
-        font-family: 'Lexend';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 25px;
-        color: #868E96;
-        :hover {
-          color: var(--color-grey2);
-        }
-    }
-    .filtros{
-      margin: 0 auto;
-      padding: 30px;
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
-    .divFechar{
-      display: none;
-      margin-top: 1250px;
-    }
-    @media (max-width:980px){
-      display: none;
-      border-top: 2px solid var(--color-grey6);
-      position: fixed;
-      z-index: 2;
-      background-color: white;
-      top: 50px;
-      right: 0;
-      max-width: 100%;
-      left: 0;
-      margin: 0 auto;
-      margin-top: 31px;
-      overflow: auto;
-      max-height: 90%;
-      ul{
-        margin-left: 15px;
-      }
-      li{
-        margin-left: 25px;
-      }
-      .divFechar{
-        display: flex;
-        margin-top: 1150px;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 40px;
-        h2{
-          margin: 0;
-          margin-left: 15px;
-        }
-        button{
-          width: 50px;
-          border: none;
-          background-color: white;
-          color: #ADB5BD;
-          font-family: 'Lexend';
-          font-size: 25px;
-          display: flex;
-          align-items: flex-start;
-          justify-content: center;
-        }
-      }
-      .filtros{
-        margin: 0 auto;
-        margin-bottom: 40px;
-        width: 270px;
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-    
-`
 export const Products = styled.div`
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
+    margin-left: 100px;
 
     @media (max-width:980px){
       flex-wrap: nowrap;
@@ -224,7 +175,7 @@ export const Pagination = styled.div`
         align-items: center;
         text-align: center;
         border: none;
-        background-color: white;
+        background-color: #F1F3F5; 
         color: var(--color-brand2);
         cursor: pointer;
         
@@ -266,9 +217,7 @@ export const ProductContainer = styled.section`
   justify-content: center;
   align-items: flex-start;
   padding: 20px;
-  .selectProduct{
-    cursor: pointer;
-  }
+
   .product-img {
     display: flex;
     align-items: center;
@@ -331,7 +280,16 @@ export const ProductContainer = styled.section`
       width: 0px;
     }
   }
-  
+  .verAnuncios{
+    border: 1.5px solid #212529;
+    margin-right: 10px;
+    height: 38px
+  }
+  .editarAnuncios{
+    border: 1.5px solid #212529;
+    height: 38px;
+    margin-right: 10px;
+  }
 `;
 
 export const ProductOwner = styled.div`
@@ -392,5 +350,82 @@ export const ProductDetails = styled.div`
     font-size: 16px;
     line-height: 20px;
     color: var(--color-grey1);
+  }
+`;
+
+
+export const Nav = styled.nav`
+  background-color: var(--color-grey10);
+  width: 100vw;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  border-bottom: 2px solid var(--color-grey6);
+  z-index: 3;
+  figure {
+    cursor: pointer;
+    margin-left: 60px;
+  }
+  .navbar-teste {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const DivNavBarUser = styled.nav`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border-left: 5px solid #DEE2E6;
+  height: 100%;
+  padding-left: 100px;
+  img{
+    width: 32px;
+    heigth: 32px;
+    border-radius: 50%;
+    margin-right: 30px;
+  }
+  p {
+    font-family: "Inter", sans-serif;
+    color: var(--color-grey2);
+    cursor: pointer;
+    font-weight: 400;
+    margin-right: 80px;
+    :hover {
+      color: var(--color-brand1);
+    }
+  }
+  button{
+    margin-right: 10px;
+  }
+  .login{
+    margin-left: 20px;
+    margin-right: 10px;
+  }
+  
+`;
+
+export const DivNavBar = styled.nav`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border-right: 2px solid var(--color-grey6);
+  
+  a {
+    text-decoration: none;
+    color: var(--color-grey2);
+    :hover {
+      color: var(--color-grey2);
+    }
   }
 `;

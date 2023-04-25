@@ -48,7 +48,7 @@ function LoginPage(){
                     <p>{errors.email?.message}</p>
                     <Input label="Senha" fieldName="senha" type="password" placeholder="Digitar senha" {...register("senha")}/>
                     <p>{errors.senha?.message}</p>
-                    <span>Esqueci minha senha</span>
+                    <span onClick={()=>{navigate("/password")}}>Esqueci minha senha</span>
                     <Button backgroundColor="var(--color-brand1)"
                     border= ""
                     backgroundColorHover= ""

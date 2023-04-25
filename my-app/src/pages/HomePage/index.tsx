@@ -6,15 +6,60 @@ import { ThemeTitle } from "../../styles/typography"
 import { Products } from "./style"
 import { Pagination } from "./style"
 import { Div } from "./style"
-import { useNavigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { useEffect } from "react"
 import { api } from "../../services/api"
 
 const banner = require("../../assets/car.png") as string;
 
+interface IAnuncioInfo {
+	id: string;
+	marca: string;
+	modelo: string;
+	ano: string;
+	combustivel: string;
+	cor: string;
+	quilometragem: number;
+	preco: number;
+	descricao: string;
+	imagens: Array<string>;
+	ativo: boolean;
+	criadoEm: string;
+	atualizadoEm: string;
+	user: {
+		id: string;
+		email: string;
+		nome: string;
+		telefone: 123;
+		bio: string;
+		imagem: string;
+		criadoEm: string;
+		atualizadoEm: string;
+		cpf: 109;
+		aniversario: string;
+		vendedor: boolean;
+		senha: string;
+		isActive: boolean;
+	};
+}
 
 function HomePage(){
+    const navigate = useNavigate();
+
+    const [anunciosInfo, setAnuncioInfo] = useState([]);
+    useEffect(() => {
+			api
+				.get(`/advertisement`)
+				.then((res) => {
+					setAnuncioInfo(res.data);
+				})
+				.catch((err) => {
+					console.log(err)
+
+				});
+	}, []);
+
     return(
         <Div>
             <NavBar/>
@@ -195,215 +240,63 @@ function HomePage(){
                     </div>
                 </Aside>
                 <Products>
-                    <ProductContainer>
-                        <div>
-                            <img className="product-img" src="https://bluesky-cogcms-prodb.cdn.imgeng.in/media/5o4jo4yv/quattroporte.png?width=520" alt="anuncio" />
-                        </div>
-                        <ThemeTitle tag="h2" className="product-title" titleSize="Heading-7-600">
-                        Miserati - Ghibli
-                        </ThemeTitle>
-                        <div className="product-description">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam facere optio unde aliquid error dolorem...</p>
-                        </div>
-                
-                        <ProductOwner>
-                            <img className="owner-avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="user" />
-                            <span className="owner-name">Username</span>
-                        </ProductOwner>
-                
-                        <ProductDetails>
-                            <div className="product-details">
-                                <p className="product-mileage">0 KM</p>
-                                <p className="product-year">2019</p>
-                            </div>
-                            <span className="product-price">
-                                R$ 12.000,00
-                            </span>
-                        </ProductDetails>
-                    </ProductContainer>
-                    <ProductContainer>
-                        <div>
-                            <img className="product-img" src="https://bluesky-cogcms-prodb.cdn.imgeng.in/media/5o4jo4yv/quattroporte.png?width=520" alt="anuncio" />
-                        </div>
-                        <ThemeTitle tag="h2" className="product-title" titleSize="Heading-7-600">
-                        Miserati - Ghibli
-                        </ThemeTitle>
-                        <div className="product-description">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam facere optio unde aliquid error dolorem...</p>
-                        </div>
-                
-                        <ProductOwner>
-                            <img className="owner-avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="user" />
-                            <span className="owner-name">Username</span>
-                        </ProductOwner>
-                
-                        <ProductDetails>
-                            <div className="product-details">
-                                <p className="product-mileage">0 KM</p>
-                                <p className="product-year">2019</p>
-                            </div>
-                            <span className="product-price">
-                                R$ 12.000,00
-                            </span>
-                        </ProductDetails>
-                    </ProductContainer>
-                    <ProductContainer>
-                        <div>
-                            <img className="product-img" src="https://bluesky-cogcms-prodb.cdn.imgeng.in/media/5o4jo4yv/quattroporte.png?width=520" alt="anuncio" />
-                        </div>
-                        <ThemeTitle tag="h2" className="product-title" titleSize="Heading-7-600">
-                        Miserati - Ghibli
-                        </ThemeTitle>
-                        <div className="product-description">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam facere optio unde aliquid error dolorem...</p>
-                        </div>
-                
-                        <ProductOwner>
-                            <img className="owner-avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="user" />
-                            <span className="owner-name">Username</span>
-                        </ProductOwner>
-                
-                        <ProductDetails>
-                            <div className="product-details">
-                                <p className="product-mileage">0 KM</p>
-                                <p className="product-year">2019</p>
-                            </div>
-                            <span className="product-price">
-                                R$ 12.000,00
-                            </span>
-                        </ProductDetails>
-                    </ProductContainer>
-                    <ProductContainer>
-                        <div>
-                            <img className="product-img" src="https://bluesky-cogcms-prodb.cdn.imgeng.in/media/5o4jo4yv/quattroporte.png?width=520" alt="anuncio" />
-                        </div>
-                        <ThemeTitle tag="h2" className="product-title" titleSize="Heading-7-600">
-                        Miserati - Ghibli
-                        </ThemeTitle>
-                        <div className="product-description">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam facere optio unde aliquid error dolorem...</p>
-                        </div>
-                
-                        <ProductOwner>
-                            <img className="owner-avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="user" />
-                            <span className="owner-name">Username</span>
-                        </ProductOwner>
-                
-                        <ProductDetails>
-                            <div className="product-details">
-                                <p className="product-mileage">0 KM</p>
-                                <p className="product-year">2019</p>
-                            </div>
-                            <span className="product-price">
-                                R$ 12.000,00
-                            </span>
-                        </ProductDetails>
-                    </ProductContainer>
-                    <ProductContainer>
-                        <div>
-                            <img className="product-img" src="https://bluesky-cogcms-prodb.cdn.imgeng.in/media/5o4jo4yv/quattroporte.png?width=520" alt="anuncio" />
-                        </div>
-                        <ThemeTitle tag="h2" className="product-title" titleSize="Heading-7-600">
-                        Miserati - Ghibli
-                        </ThemeTitle>
-                        <div className="product-description">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam facere optio unde aliquid error dolorem...</p>
-                        </div>
-                
-                        <ProductOwner>
-                            <img className="owner-avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="user" />
-                            <span className="owner-name">Username</span>
-                        </ProductOwner>
-                
-                        <ProductDetails>
-                            <div className="product-details">
-                                <p className="product-mileage">0 KM</p>
-                                <p className="product-year">2019</p>
-                            </div>
-                            <span className="product-price">
-                                R$ 12.000,00
-                            </span>
-                        </ProductDetails>
-                    </ProductContainer>
-                    <ProductContainer>
-                        <div>
-                            <img className="product-img" src="https://bluesky-cogcms-prodb.cdn.imgeng.in/media/5o4jo4yv/quattroporte.png?width=520" alt="anuncio" />
-                        </div>
-                        <ThemeTitle tag="h2" className="product-title" titleSize="Heading-7-600">
-                        Miserati - Ghibli
-                        </ThemeTitle>
-                        <div className="product-description">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam facere optio unde aliquid error dolorem...</p>
-                        </div>
-                
-                        <ProductOwner>
-                            <img className="owner-avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="user" />
-                            <span className="owner-name">Username</span>
-                        </ProductOwner>
-                
-                        <ProductDetails>
-                            <div className="product-details">
-                                <p className="product-mileage">0 KM</p>
-                                <p className="product-year">2019</p>
-                            </div>
-                            <span className="product-price">
-                                R$ 12.000,00
-                            </span>
-                        </ProductDetails>
-                    </ProductContainer>
-                    <ProductContainer>
-                        <div>
-                            <img className="product-img" src="https://bluesky-cogcms-prodb.cdn.imgeng.in/media/5o4jo4yv/quattroporte.png?width=520" alt="anuncio" />
-                        </div>
-                        <ThemeTitle tag="h2" className="product-title" titleSize="Heading-7-600">
-                        Miserati - Ghibli
-                        </ThemeTitle>
-                        <div className="product-description">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam facere optio unde aliquid error dolorem...</p>
-                        </div>
-                
-                        <ProductOwner>
-                            <img className="owner-avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="user" />
-                            <span className="owner-name">Username</span>
-                        </ProductOwner>
-                
-                        <ProductDetails>
-                            <div className="product-details">
-                                <p className="product-mileage">0 KM</p>
-                                <p className="product-year">2019</p>
-                            </div>
-                            <span className="product-price">
-                                R$ 12.000,00
-                            </span>
-                        </ProductDetails>
-                    </ProductContainer>
-                    <ProductContainer>
-                        <div>
-                            <img className="product-img" src="https://bluesky-cogcms-prodb.cdn.imgeng.in/media/5o4jo4yv/quattroporte.png?width=520" alt="anuncio" />
-                        </div>
-                        <ThemeTitle tag="h2" className="product-title" titleSize="Heading-7-600">
-                        Miserati - Ghibli
-                        </ThemeTitle>
-                        <div className="product-description">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam facere optio unde aliquid error dolorem...</p>
-                        </div>
-                
-                        <ProductOwner>
-                            <img className="owner-avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="user" />
-                            <span className="owner-name">Username</span>
-                        </ProductOwner>
-                
-                        <ProductDetails>
-                            <div className="product-details">
-                                <p className="product-mileage">0 KM</p>
-                                <p className="product-year">2019</p>
-                            </div>
-                            <span className="product-price">
-                                R$ 12.000,00
-                            </span>
-                        </ProductDetails>
-                    </ProductContainer>
-                </Products>
+					{anunciosInfo.map((anuncio: IAnuncioInfo) => {
+						console.log(anuncio);
+						return (
+							<ProductContainer>
+                                <div className="selectProduct" onClick={()=>{navigate("/adpage")}}>
+                                    <div>
+                                        <img
+                                            className="product-img"
+                                            src={
+                                                anuncio.imagens
+                                                    ? anuncio.imagens[0]
+                                                    : 'https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled.png'
+                                            }
+                                            alt="anuncio"
+                                        />
+                                    </div>
+                                    <ThemeTitle
+                                        tag="h2"
+                                        className="product-title"
+                                        titleSize="Heading-7-600"
+                                    >
+                                        {anuncio.marca} - {anuncio.modelo}
+                                    </ThemeTitle>
+                                    <div className="product-description">
+                                        <p>{anuncio.descricao}</p>
+                                    </div>
+                                </div>
+
+								<ProductOwner>
+									<img
+										className="owner-avatar"
+										src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+										alt="user"
+									/>
+									<span className="owner-name">
+                                        Usuario
+										{/* {anuncio.user.nome} */}
+									</span>
+								</ProductOwner>
+
+								<ProductDetails>
+									<div className="product-details">
+										<p className="product-mileage">
+											{anuncio.quilometragem} KM
+										</p>
+										<p className="product-year">
+											{anuncio.ano}
+										</p>
+									</div>
+									<span className="product-price">
+										R$ {anuncio.preco}
+									</span>
+								</ProductDetails>
+							</ProductContainer>
+						);
+					})}
+				</Products>
             </Main>
             <div className="filtro">
                 <Button
