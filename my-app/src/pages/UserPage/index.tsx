@@ -1,14 +1,13 @@
 import Button from '../../components/buttons';
-import NavBar from '../../components/navBar';
 import { Footer } from '../../components/footer';
 import {
 	Container,
 	Main,
 	ProductContainer,
 	ProductDetails,
-	ProductOwner,
+
 } from './style';
-import { DivNavBar, DivNavBarUser, Nav } from './style';
+import { DivNavBarUser, Nav } from './style';
 import { ThemeTitle } from '../../styles/typography';
 import { Products } from './style';
 import { Pagination } from './style';
@@ -24,7 +23,6 @@ import { EditAddress } from '../../components/modal/EditAddress';
 import { DeleteAd } from '../../components/modal/DeleteAd';
 import { EditAd } from '../../components/modal/EditAd';
 
-const banner = require('../../assets/car.png') as string;
 const logo = require('../../assets/logo.png') as string;
 
 export interface IUserInfo {
