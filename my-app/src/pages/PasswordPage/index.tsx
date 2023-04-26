@@ -11,13 +11,16 @@ import { api } from "../../services/api"
 
 function PasswordPage(){
     const navigate = useNavigate()
+    let data = {
+        email: ""
+    }
     return(
         <Div>
             <NavBar/>
 
             <Main>
                 <div className="div">
-                    <Input label="Digite o email para recuperação de senha" fieldName="usuario" type="text" placeholder="Digite seu email" />
+                    <Input id="email" label="Digite o email para recuperação de senha" fieldName="usuario" type="text" placeholder="Digite seu email" />
                     <Button
                         backgroundColor= "#6200E3"
                         border= ""
@@ -26,6 +29,16 @@ function PasswordPage(){
                         fontColor= "#FFFFFF"
                         fontColorHover= ""
                         onClick={()=>{
+                            let email = document.getElementById("email") as HTMLInputElement
+                            data.email = email.value
+                            api
+                            .post(`/forgot_password`, data)
+                            .then((res) => {
+                                console.log(res.data);
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            });
                             let input = document.querySelector("input")
                             let button = document.querySelector(".btn")
                             let label = document.querySelector("label")
