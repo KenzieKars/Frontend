@@ -1,4 +1,3 @@
-import Button from '../../components/buttons';
 import NavBar from '../../components/navBar';
 import { Footer } from '../../components/footer';
 import {
@@ -8,28 +7,15 @@ import {
 	ProductDetails,
 	ProductOwner,
 } from './style';
-import { DivNavBar, DivNavBarUser, Nav } from './style';
+
 import { ThemeTitle } from '../../styles/typography';
 import { Products } from './style';
-import { Pagination } from './style';
 import { Div } from './style';
-import MobileMenu from '../../components/mobileMenu';
 import { api } from '../../services/api';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
-interface IUserInfo {
-	id: string;
-	nome: string;
-	email: string;
-	telefone: string;
-	bio: string;
-	imagem: string;
-	cpf: string;
-	aniversario: string;
-	vendedor?: boolean;
-}
 interface IAnuncioInfo {
 	id: string;
 	marca: string;
@@ -63,34 +49,13 @@ interface IAnuncioInfo {
 
 function ViewUserPage() {
 	const { id } = useParams();
-	const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
-	const [anunciosInfo, setAnuncioInfo] = useState([]);
-	const token: string | null = localStorage.getItem('@user:Token');
-	const userId: string | null = localStorage.getItem('@user:ID');
+	const [anunciosInfo, setAnuncioInfo] = useState<any>([]) as any;
 	const navigate = useNavigate();
-	useEffect(() => {
-		if(!token){
-			navigate('/');
-		}
-		token &&
-			api
-				.get(`/users/${id}`, {
-					headers: { Authorization: `Bearer ${token}` },
-				})
-				.then((res) => {
-					setUserInfo(res.data.foundUserByParam);
-				})
-				.catch((err) => {
-					console.log(err)
-				});
-	}, []);
+	
 
 	useEffect(() => {
-		token &&
 			api
-				.get(`/advertisement/users/${id}`, {
-					headers: { Authorization: `Bearer ${token}` },
-				})
+				.get(`/advertisement/users/${id}`)
 				.then((res) => {
 					setAnuncioInfo(res.data);
 				})
@@ -114,13 +79,13 @@ function ViewUserPage() {
 						className="product-title"
 						titleSize="Heading-6-600"
 					>
-						{userInfo.nome}
+						{anunciosInfo && anunciosInfo.length > 0 ? anunciosInfo[0].user.nome : 'Not found'}
 					</ThemeTitle>
 					<span>
-						{userInfo.vendedor ? 'Anunciante' : 'Comprador'}
+						Anunciante
 					</span>
 				</div>
-				<p>{userInfo.bio}</p>
+				<p>{anunciosInfo && anunciosInfo.length > 0 ? anunciosInfo[0].user.bio : 'Not found'}</p>
 			</div>
 			<ThemeTitle tag="h2" className="anuncios" titleSize="Heading-5-600">
 				Anúncios

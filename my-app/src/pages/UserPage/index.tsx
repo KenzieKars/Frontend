@@ -1,14 +1,13 @@
 import Button from '../../components/buttons';
-import NavBar from '../../components/navBar';
 import { Footer } from '../../components/footer';
 import {
 	Container,
 	Main,
 	ProductContainer,
 	ProductDetails,
-	ProductOwner,
+
 } from './style';
-import { DivNavBar, DivNavBarUser, Nav } from './style';
+import { DivNavBarUser, Nav } from './style';
 import { ThemeTitle } from '../../styles/typography';
 import { Products } from './style';
 import { Pagination } from './style';
@@ -20,7 +19,6 @@ import { useNavigate } from 'react-router-dom';
 import { NewAdModal } from '../../components/modal/AddNewAd';
 import { ConfirmNewAdModal } from '../../components/modal/NewAdConfirm';
 
-const banner = require('../../assets/car.png') as string;
 const logo = require('../../assets/logo.png') as string;
 
 interface IUserInfo {
