@@ -19,11 +19,15 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NewAdModal } from '../../components/modal/AddNewAd';
 import { ConfirmNewAdModal } from '../../components/modal/NewAdConfirm';
+import { EditProfile } from '../../components/modal/EditProfile';
+import { EditAddress } from '../../components/modal/EditAddress';
+import { DeleteAd } from '../../components/modal/DeleteAd';
+import { EditAd } from '../../components/modal/EditAd';
 
 const banner = require('../../assets/car.png') as string;
 const logo = require('../../assets/logo.png') as string;
 
-interface IUserInfo {
+export interface IUserInfo {
 	id: string;
 	nome: string;
 	email: string;
@@ -67,15 +71,29 @@ interface IAnuncioInfo {
 
 function UserPage() {
 	const [newAdModal, setNewAdModal] = useState(false);
+	const [editProfileModal, setEditProfileModal] = useState(false);
+	const [editAddressModal, setEditAddressModal] = useState(false);
+	const [editAdModal, setEditAdModal] = useState(false);
+	const [deleteAdModal, setDeleteAdModal] = useState(false);
+	const [selectedAd, setSelectedAd] = useState('');
 	const [confirmNewAdModal, setConfirmNewAdModal] = useState(false);
 	const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
 	const [anunciosInfo, setAnuncioInfo] = useState([]);
+
 	const token: string | null = localStorage.getItem('@user:Token');
 	const userId: string | null = localStorage.getItem('@user:ID');
+
 	const navigate = useNavigate();
+
 	if (!token) {
 		navigate('/');
 	}
+
+	const handleEditAd = (adId: string) => {
+		setEditAdModal(true);
+		setSelectedAd(adId);
+	};
+
 	useEffect(() => {
 		token &&
 			api
@@ -105,6 +123,7 @@ function UserPage() {
 					navigate('/login');
 				});
 	}, []);
+
 	return (
 		<Div>
 			<Nav>
@@ -122,7 +141,21 @@ function UserPage() {
 						src="https://cdn-icons-png.flaticon.com/512/21/21104.png"
 						alt="user"
 					/>
-					<p>{userInfo.nome}</p>
+					<Button
+						backgroundColor="transparent"
+						border=""
+						backgroundColorHover=""
+						borderHover="transparent"
+						fontColor="var(--color-grey2)"
+						fontColorHover="var(--color-brand1)"
+						onClick={() => {
+							setEditProfileModal(true);
+						}}
+						type="button"
+						className=""
+					>
+						{userInfo.nome}
+					</Button>
 				</DivNavBarUser>
 			</Nav>
 			<MobileMenu></MobileMenu>
@@ -191,7 +224,6 @@ function UserPage() {
 									<p>{anuncio.descricao}</p>
 								</div>
 
-
 								<ProductDetails>
 									<div className="product-details">
 										<p className="product-mileage">
@@ -213,7 +245,9 @@ function UserPage() {
 										borderHover=""
 										fontColor="#212529"
 										fontColorHover=""
-										onClick={() => {}}
+										onClick={() => {
+											handleEditAd(anuncio.id);
+										}}
 										type="button"
 										className="editarAnuncios"
 									>
@@ -257,6 +291,30 @@ function UserPage() {
 			{confirmNewAdModal && (
 				<ConfirmNewAdModal
 					setConfirmNewAdModal={setConfirmNewAdModal}
+				/>
+			)}
+
+			{editProfileModal && (
+				<EditProfile
+					setEditProfileModal={setEditProfileModal}
+					userInfo={userInfo}
+				/>
+			)}
+
+			{/* {<EditAddress setEditAddressModal={setEditAddressModal} />} */}
+
+			{editAdModal && (
+				<EditAd
+					setEditAdModal={setEditAdModal}
+					setDeleteAdModal={setDeleteAdModal}
+					selectedAd={selectedAd}
+				/>
+			)}
+
+			{deleteAdModal && (
+				<DeleteAd
+					setDeleteAdModal={setDeleteAdModal}
+					selectedAd={selectedAd}
 				/>
 			)}
 		</Div>

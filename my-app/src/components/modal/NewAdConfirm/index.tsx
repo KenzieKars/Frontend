@@ -4,6 +4,7 @@ import {
 	StyledContent,
 	StyledModal,
 	StyledOverlay,
+	StyledParagraph,
 } from '../style';
 import { ThemeTitle } from '../../../styles/typography';
 import Button from '../../buttons';
@@ -62,10 +63,10 @@ export const ConfirmNewAdModal = (props: IProps) => {
 					<ThemeTitle tag="h3" className="" titleSize="Heading-7-500">
 						Seu anúncio foi criado com sucesso!
 					</ThemeTitle>
-					<ThemeTitle tag="h4" className="" titleSize="Heading-7-500">
+					<StyledParagraph>
 						Agora você poderá ver seus negócios crescendo em grande
 						escala.
-					</ThemeTitle>
+					</StyledParagraph>
 				</StyledContent>
 			</StyledOverlay>
 		</StyledModal>

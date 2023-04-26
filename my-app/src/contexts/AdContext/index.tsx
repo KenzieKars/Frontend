@@ -50,7 +50,7 @@ export interface IModel {
 interface IAdContext {
 	addNewAd(data: INewAd): Promise<INewAdResponse | undefined>;
 	brands: string[];
-	selectedModel: IModel | undefined;
+	selectedModel: IModel;
 	modelsByBrand(brand: string): Promise<string[] | undefined>;
 	modelData(brand: string, model: string): Promise<IModel | undefined>;
 }
@@ -59,7 +59,14 @@ export const AdContext = createContext<IAdContext>({} as IAdContext);
 
 export const AdProvider = ({ children }: IAdContextProps) => {
 	const [brands, setBrands] = useState<string[]>([]);
-	const [selectedModel, setSelectedModel] = useState<IModel>();
+	const [selectedModel, setSelectedModel] = useState<IModel>({
+		id: '',
+		name: '',
+		brand: '',
+		year: '',
+		fuel: 0,
+		value: 0,
+	});
 
 	useEffect(() => {
 		const allBrands = async (): Promise<string[] | undefined> => {
@@ -117,7 +124,7 @@ export const AdProvider = ({ children }: IAdContextProps) => {
 		data: INewAd
 	): Promise<INewAdResponse | undefined> => {
 		const token: string | null = localStorage.getItem('@user:Token');
-		console.log(data);
+
 		try {
 			const res = await api.post<INewAdResponse>('advertisement', data, {
 				headers: { Authorization: `Bearer ${token}` },

@@ -111,4 +111,31 @@ export const DivButtonsModal = styled.div`
 	align-items: center;
 	justify-content: end;
 	gap: 10px;
+
+	.isPublishedBtn {
+		width: 50%;
+	}
+`;
+
+export const StyledParagraph = styled.p`
+	color: var(--color-grey2);
+
+	margin-top: 20px;
+	margin-bottom: 20px;
+
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 20px;
+`;
+
+export const StyledPublishedLabel = styled.label`
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	font-weight: 500;
+	font-size: 14px;
+	font-family: 'Inter';
 `;

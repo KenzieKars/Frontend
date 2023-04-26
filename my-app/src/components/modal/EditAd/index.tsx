@@ -1,105 +1,56 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useContext, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
 	DivButtonsModal,
 	DivHeaderModal,
 	StyledContent,
-	// StyledDescriptionTextarea,
 	StyledDivInputs,
 	StyledForm,
 	StyledModal,
 	StyledOverlay,
+	StyledPublishedLabel,
 } from '../style';
+import { editAddressSchema } from '../../../serializers/editAddress/editAddress';
+import { useEffect, useRef, useState } from 'react';
+import { ThemeTitle } from '../../../styles/typography';
 import { Input } from '../../input';
 import Button from '../../buttons';
-import { ThemeTitle } from '../../../styles/typography';
-import { schema } from '../../../serializers/newAd/newAd';
-import { AdContext, INewAd } from '../../../contexts/AdContext';
-import { LabelSelect } from '../../select';
 
 interface IProps {
-	setNewAdModal: React.Dispatch<React.SetStateAction<boolean>>;
-	setConfirmNewAdModal: React.Dispatch<React.SetStateAction<boolean>>;
+	setEditAdModal: React.Dispatch<React.SetStateAction<boolean>>;
+	setDeleteAdModal: React.Dispatch<React.SetStateAction<boolean>>;
+	selectedAd: string;
 }
 
-export const NewAdModal = (props: IProps) => {
-	const { setNewAdModal, setConfirmNewAdModal } = props;
+export const EditAd = (props: IProps) => {
+	const { setEditAdModal, setDeleteAdModal, selectedAd } = props;
 
-	const { brands, selectedModel, modelsByBrand, modelData, addNewAd } =
-		useContext(AdContext);
-
-	const [models, setModels] = useState<string[] | undefined>([]);
-	const [selectedBrand, setSelectedBrand] = useState('');
+	const [isPublished, setIsPublished] = useState(false);
 
 	const [mainImage, setMainImage] = useState('');
 	const [firstImage, setFirstImage] = useState('');
 	const [secondImage, setSecondImage] = useState('');
 
-	const handleBrandChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-		const { value } = evt.target;
-
-		setSelectedBrand(value);
-
-		handleModels(evt);
+	const handleIsPublished = (isPublished: boolean) => {
+		setIsPublished(isPublished);
 	};
 
-	const handleModels = async (evt: React.ChangeEvent<HTMLSelectElement>) => {
-		const { value } = evt.target;
-
-		const res = await modelsByBrand(value);
-
-		setModels(res);
+	const handleDeleteAd = () => {
+		setEditAdModal(false);
+		setDeleteAdModal(true);
 	};
 
-	const handleModelData = async (
-		evt: React.ChangeEvent<HTMLSelectElement>
-	) => {
-		const { value } = evt.target;
-
-		await modelData(selectedBrand, value);
-	};
-
-	const handleClick = async () => {
-		const dataForm = getValues();
-
-		const images = [mainImage, firstImage, secondImage];
-
-		const newAd: INewAd = {
-			...dataForm,
-			imagens: images,
-			ano: selectedModel?.year,
-			combustivel: selectedModel?.fuel.toString(),
-		};
-
-		newAd.modelo = newAd.modelo.replace(/^[a-z]/, (letter) =>
-			letter.toUpperCase()
-		);
-		newAd.marca = newAd.marca.replace(/^[a-z]/, (letter) =>
-			letter.toUpperCase()
-		);
-
-		if (newAd.combustivel === '1') {
-			newAd.combustivel = 'flex';
-		} else if (newAd.combustivel === '2') {
-			newAd.combustivel = 'híbrido';
-		} else {
-			newAd.combustivel = 'elétrico';
-		}
-
-		const createdNewAd = await addNewAd(newAd);
-
-		createdNewAd?.id && setNewAdModal(false);
-		createdNewAd?.id && setConfirmNewAdModal(true);
+	const handleClick = () => {
+		console.log(selectedAd);
 	};
 
 	const {
 		register,
-		getValues,
 		handleSubmit,
+		getValues,
 		formState: { errors },
-	} = useForm<INewAd>({
-		resolver: yupResolver(schema),
+	} = useForm({
+		resolver: yupResolver(editAddressSchema),
 	});
 
 	const contentRef = useRef<HTMLDivElement>(null);
@@ -107,7 +58,7 @@ export const NewAdModal = (props: IProps) => {
 	useEffect(() => {
 		const handleOutclick = (evt: MouseEvent) => {
 			const target = evt.target as HTMLDivElement;
-			!contentRef.current?.contains(target) && setNewAdModal(false);
+			!contentRef.current?.contains(target) && setEditAdModal(false);
 		};
 
 		document.addEventListener('mousedown', handleOutclick);
@@ -127,7 +78,7 @@ export const NewAdModal = (props: IProps) => {
 							className=""
 							titleSize="Heading-7-500"
 						>
-							Criar anúncio
+							Editar anúncio
 						</ThemeTitle>
 						<Button
 							backgroundColor="transparent"
@@ -137,7 +88,7 @@ export const NewAdModal = (props: IProps) => {
 							fontColor="var(--color-grey4)"
 							fontColorHover=""
 							onClick={() => {
-								setNewAdModal(false);
+								setEditAdModal(false);
 							}}
 							type="button"
 							className=""
@@ -145,7 +96,7 @@ export const NewAdModal = (props: IProps) => {
 							X
 						</Button>
 					</DivHeaderModal>
-					<StyledForm onSubmit={handleSubmit(handleClick)}>
+					<StyledForm>
 						<ThemeTitle
 							tag="h2"
 							className=""
@@ -153,58 +104,28 @@ export const NewAdModal = (props: IProps) => {
 						>
 							Infomações do veículo
 						</ThemeTitle>
-						<LabelSelect htmlFor="brand">
-							<>
-								Marca
-								<select
-									id="brand"
-									{...register('marca')}
-									onChange={handleBrandChange}
-								>
-									<option value="empty">
-										Selecione uma marca
-									</option>
-									{brands?.map((brand, index) => (
-										<option value={brand} key={index}>
-											{brand.replace(/^[a-z]/, (letter) =>
-												letter.toUpperCase()
-											)}
-										</option>
-									))}
-								</select>
-							</>
-						</LabelSelect>
-						<LabelSelect htmlFor="model">
-							<>
-								Modelo
-								<select
-									id="model"
-									{...register('modelo')}
-									onChange={handleModelData}
-									disabled={
-										selectedBrand === 'empty' ||
-										!selectedBrand
-									}
-								>
-									<option value="empty">
-										Selecione um modelo
-									</option>
-									{models?.map((model, index) => (
-										<option value={model} key={index}>
-											{model.replace(/^[a-z]/, (letter) =>
-												letter.toUpperCase()
-											)}
-										</option>
-									))}
-								</select>
-							</>
-						</LabelSelect>
+						<Input
+							label="Marca"
+							fieldName="brand"
+							type="text"
+							placeholder="Mercedes Benz"
+							disabled
+							{...register('marca')}
+						/>
+						<Input
+							label="Modelo"
+							fieldName="model"
+							type="text"
+							placeholder="A 200 CGI ADVANCE SEDAN"
+							disabled
+							{...register('modelo')}
+						/>
 						<StyledDivInputs>
 							<Input
 								label="Ano"
 								fieldName="year"
 								type="text"
-								placeholder={selectedModel?.year ?? '-'}
+								placeholder="1990"
 								disabled
 								{...register('ano')}
 							/>
@@ -212,15 +133,7 @@ export const NewAdModal = (props: IProps) => {
 								label="Combustível"
 								fieldName="fuel"
 								type="text"
-								placeholder={
-									selectedModel?.fuel === 1
-										? 'Flex'
-										: selectedModel?.fuel === 2
-										? 'Híbrido'
-										: selectedModel?.fuel === 3
-										? 'Elétrico'
-										: '-'
-								}
+								placeholder="Flex"
 								disabled
 								{...register('combustivel')}
 							/>
@@ -242,11 +155,7 @@ export const NewAdModal = (props: IProps) => {
 								label="Preço tabela FIPE"
 								fieldName="fipePrice"
 								type="text"
-								placeholder={`R$ ${
-									selectedModel
-										? selectedModel?.value.toString()
-										: '00.000'
-								},00`}
+								placeholder="000000"
 								disabled
 							/>
 							<Input
@@ -263,7 +172,65 @@ export const NewAdModal = (props: IProps) => {
 							placeholder="Digitar descrição..."
 							{...register('descricao')}
 						/>
-
+						<StyledPublishedLabel>
+							Publicado
+							<DivButtonsModal>
+								<Button
+									backgroundColor={
+										isPublished
+											? 'var(--color-brand1)'
+											: 'transparent'
+									}
+									border={
+										isPublished
+											? 'var(--color-brand1)'
+											: 'var(--color-grey4)'
+									}
+									backgroundColorHover=""
+									borderHover=""
+									fontColor={
+										isPublished
+											? 'var(--color-whiteFixed)'
+											: 'var(--color-grey0)'
+									}
+									fontColorHover=""
+									onClick={() => {
+										handleIsPublished(true);
+									}}
+									type="button"
+									className="isPublishedBtn"
+								>
+									Sim
+								</Button>
+								<Button
+									backgroundColor={
+										!isPublished
+											? 'var(--color-brand1)'
+											: 'transparent'
+									}
+									border={
+										!isPublished
+											? 'var(--color-brand1)'
+											: 'var(--color-grey4)'
+									}
+									backgroundColorHover=""
+									borderHover=""
+									fontColor={
+										!isPublished
+											? 'var(--color-whiteFixed)'
+											: 'var(--color-grey0)'
+									}
+									fontColorHover=""
+									onClick={() => {
+										handleIsPublished(false);
+									}}
+									type="button"
+									className="isPublishedBtn"
+								>
+									Não
+								</Button>
+							</DivButtonsModal>
+						</StyledPublishedLabel>
 						<Input
 							label="Imagem da capa"
 							fieldName="mainImage"
@@ -310,12 +277,12 @@ export const NewAdModal = (props: IProps) => {
 								fontColor="var(--color-grey2)"
 								fontColorHover="var(--color-grey0)"
 								onClick={() => {
-									setNewAdModal(false);
+									handleDeleteAd();
 								}}
 								type="button"
 								className=""
 							>
-								Cancelar
+								Excluir anúncio
 							</Button>
 							<Button
 								backgroundColor="var(--color-brand3)"
@@ -327,10 +294,10 @@ export const NewAdModal = (props: IProps) => {
 								onClick={() => {
 									handleClick();
 								}}
-								type="submit"
+								type="button"
 								className=""
 							>
-								Criar anúncio
+								Salvar alterações
 							</Button>
 						</DivButtonsModal>
 					</StyledForm>

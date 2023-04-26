@@ -3,14 +3,17 @@ import GlobalStyle from './styles/global';
 
 import { RoutesMain } from './routes';
 import { AdProvider } from './contexts/AdContext';
+import { AuthProvider } from './contexts/UserContext';
 
 function App() {
 	return (
 		<>
 			<GlobalStyle />
-			<AdProvider>
-				<RoutesMain />
-			</AdProvider>
+			<AuthProvider>
+				<AdProvider>
+					<RoutesMain />
+				</AdProvider>
+			</AuthProvider>
 		</>
 	);
 }
