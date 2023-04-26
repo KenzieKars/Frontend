@@ -40,7 +40,7 @@ function ResetPasswordPage(){
                             let senha = document.getElementById("senha") as HTMLInputElement
                             data.senha = senha.value
                             api
-                            .post(`/reset_password`, data)
+                            .post(`/senha/reset_password`, data)
                             .then((res) => {
                                 console.log(res.data);
                             })

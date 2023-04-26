@@ -32,7 +32,7 @@ function PasswordPage(){
                             let email = document.getElementById("email") as HTMLInputElement
                             data.email = email.value
                             api
-                            .post(`/forgot_password`, data)
+                            .post(`/senha/forgot_password`, data)
                             .then((res) => {
                                 console.log(res.data);
                             })
