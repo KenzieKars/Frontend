@@ -124,7 +124,6 @@ export const AdProvider = ({ children }: IAdContextProps) => {
 		data: INewAd
 	): Promise<INewAdResponse | undefined> => {
 		const token: string | null = localStorage.getItem('@user:Token');
-
 		try {
 			const res = await api.post<INewAdResponse>('advertisement', data, {
 				headers: { Authorization: `Bearer ${token}` },
