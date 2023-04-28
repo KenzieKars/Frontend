@@ -10,22 +10,20 @@ import {
 	StyledOverlay,
 	StyledPublishedLabel,
 } from '../style';
-import { editAddressSchema } from '../../../serializers/editAddress/editAddress';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { ThemeTitle } from '../../../styles/typography';
 import { Input } from '../../input';
 import Button from '../../buttons';
+import { AdContext, IEditAdRequest } from '../../../contexts/AdContext';
+import { editAdSchema } from '../../../serializers/adSchemas/editAd';
 
-interface IProps {
-	setEditAdModal: React.Dispatch<React.SetStateAction<boolean>>;
-	setDeleteAdModal: React.Dispatch<React.SetStateAction<boolean>>;
-	selectedAd: string;
-}
+export const EditAd = () => {
+	const { setEditAdModal, setDeleteAdModal, selectedAd, editAd } =
+		useContext(AdContext);
 
-export const EditAd = (props: IProps) => {
-	const { setEditAdModal, setDeleteAdModal, selectedAd } = props;
-
-	const [isPublished, setIsPublished] = useState(false);
+	const [isPublished, setIsPublished] = useState(
+		selectedAd?.ativo ? true : false
+	);
 
 	const [mainImage, setMainImage] = useState('');
 	const [firstImage, setFirstImage] = useState('');
@@ -40,17 +38,37 @@ export const EditAd = (props: IProps) => {
 		setDeleteAdModal(true);
 	};
 
-	const handleClick = () => {
-		console.log(selectedAd);
+	const handleClick = async () => {
+		const dataForm = getValues();
+
+		dataForm.quilometragem = dataForm.quilometragem
+			? dataForm.quilometragem
+			: selectedAd?.quilometragem;
+		dataForm.cor = dataForm.cor ? dataForm.cor : selectedAd?.cor;
+		dataForm.preco = dataForm.preco ? dataForm.preco : selectedAd?.preco;
+		dataForm.descricao = dataForm.descricao
+			? dataForm.descricao
+			: selectedAd?.descricao;
+
+		const images = [
+			mainImage ? mainImage : selectedAd!.imagens[0],
+			firstImage ? firstImage : selectedAd!.imagens[1],
+			secondImage ? secondImage : selectedAd!.imagens[2],
+		];
+
+		const newAdInfo: IEditAdRequest = {
+			...dataForm,
+			publicado: isPublished,
+			imagens: images,
+		};
+
+		const editedAd = await editAd(newAdInfo, selectedAd!.id);
+
+		editedAd?.id && setEditAdModal(false);
 	};
 
-	const {
-		register,
-		handleSubmit,
-		getValues,
-		formState: { errors },
-	} = useForm({
-		resolver: yupResolver(editAddressSchema),
+	const { register, handleSubmit, getValues } = useForm<IEditAdRequest>({
+		resolver: yupResolver(editAdSchema),
 	});
 
 	const contentRef = useRef<HTMLDivElement>(null);
@@ -66,6 +84,7 @@ export const EditAd = (props: IProps) => {
 		return () => {
 			document.removeEventListener('mousedown', handleOutclick);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -96,7 +115,7 @@ export const EditAd = (props: IProps) => {
 							X
 						</Button>
 					</DivHeaderModal>
-					<StyledForm>
+					<StyledForm onSubmit={handleSubmit(handleClick)}>
 						<ThemeTitle
 							tag="h2"
 							className=""
@@ -108,68 +127,67 @@ export const EditAd = (props: IProps) => {
 							label="Marca"
 							fieldName="brand"
 							type="text"
-							placeholder="Mercedes Benz"
+							placeholder={selectedAd?.marca}
 							disabled
-							{...register('marca')}
 						/>
 						<Input
 							label="Modelo"
 							fieldName="model"
 							type="text"
-							placeholder="A 200 CGI ADVANCE SEDAN"
+							placeholder={selectedAd?.modelo}
 							disabled
-							{...register('modelo')}
 						/>
 						<StyledDivInputs>
 							<Input
 								label="Ano"
 								fieldName="year"
 								type="text"
-								placeholder="1990"
+								placeholder={selectedAd?.ano}
 								disabled
-								{...register('ano')}
 							/>
 							<Input
 								label="Combustível"
 								fieldName="fuel"
 								type="text"
-								placeholder="Flex"
+								placeholder={selectedAd?.combustivel.replace(
+									/^[a-z]/,
+									(letter) => letter.toUpperCase()
+								)}
 								disabled
-								{...register('combustivel')}
 							/>
 							<Input
 								label="Quilometragem"
 								fieldName="mileage"
 								type="text"
-								placeholder="30.000"
+								placeholder={`${selectedAd?.quilometragem} KM`}
 								{...register('quilometragem')}
 							/>
 							<Input
 								label="Cor"
 								fieldName="color"
 								type="text"
-								placeholder="Branco"
+								placeholder={selectedAd?.cor}
 								{...register('cor')}
 							/>
 							<Input
 								label="Preço tabela FIPE"
 								fieldName="fipePrice"
 								type="text"
-								placeholder="000000"
+								placeholder={'R$ 30.000,00'}
 								disabled
 							/>
 							<Input
 								label="Preço"
 								fieldName="price"
 								type="text"
-								placeholder="R$ 50.000,00"
+								placeholder={`R$ ${selectedAd?.preco}`}
 								{...register('preco')}
 							/>
 						</StyledDivInputs>
 						<Input
 							label="Descrição"
 							fieldName="description"
-							placeholder="Digitar descrição..."
+							placeholder={selectedAd?.descricao}
 							{...register('descricao')}
 						/>
 						<StyledPublishedLabel>
@@ -235,7 +253,7 @@ export const EditAd = (props: IProps) => {
 							label="Imagem da capa"
 							fieldName="mainImage"
 							type="text"
-							placeholder="https://image.com"
+							placeholder={selectedAd?.imagens[0]}
 							value={mainImage}
 							onChange={(e) => setMainImage(e.target.value)}
 						/>
@@ -243,7 +261,7 @@ export const EditAd = (props: IProps) => {
 							label="1ª Imagem da galeria"
 							fieldName="firstImage"
 							type="text"
-							placeholder="https://image.com"
+							placeholder={selectedAd?.imagens[1]}
 							value={firstImage}
 							onChange={(e) => setFirstImage(e.target.value)}
 						/>
@@ -251,7 +269,7 @@ export const EditAd = (props: IProps) => {
 							label="2ª Imagem da galeria"
 							fieldName="secondImage"
 							type="text"
-							placeholder="https://image.com"
+							placeholder={selectedAd?.imagens[2]}
 							value={secondImage}
 							onChange={(e) => setSecondImage(e.target.value)}
 						/>
@@ -294,7 +312,7 @@ export const EditAd = (props: IProps) => {
 								onClick={() => {
 									handleClick();
 								}}
-								type="button"
+								type="submit"
 								className=""
 							>
 								Salvar alterações

@@ -1,12 +1,6 @@
 import Button from '../../components/buttons';
 import { Footer } from '../../components/footer';
-import {
-	Container,
-	Main,
-	ProductContainer,
-	ProductDetails,
-
-} from './style';
+import { Container, Main, ProductContainer, ProductDetails } from './style';
 import { DivNavBarUser, Nav } from './style';
 import { ThemeTitle } from '../../styles/typography';
 import { Products } from './style';
@@ -14,72 +8,42 @@ import { Pagination } from './style';
 import { Div } from './style';
 import MobileMenu from '../../components/mobileMenu';
 import { api } from '../../services/api';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { NewAdModal } from '../../components/modal/AddNewAd';
+import { CreateAdModal } from '../../components/modal/AddNewAd';
 import { ConfirmNewAdModal } from '../../components/modal/NewAdConfirm';
 import { EditProfile } from '../../components/modal/EditProfile';
 import { EditAddress } from '../../components/modal/EditAddress';
 import { DeleteAd } from '../../components/modal/DeleteAd';
 import { EditAd } from '../../components/modal/EditAd';
+import { AdContext, IAdInfo } from '../../contexts/AdContext';
+import { AuthContext } from '../../contexts/UserContext';
 
 const logo = require('../../assets/logo.png') as string;
 
-export interface IUserInfo {
-	id: string;
-	nome: string;
-	email: string;
-	telefone: string;
-	bio: string;
-	imagem: string;
-	cpf: string;
-	aniversario: string;
-	vendedor?: boolean;
-}
-interface IAnuncioInfo {
-	id: string;
-	marca: string;
-	modelo: string;
-	ano: string;
-	combustivel: string;
-	cor: string;
-	quilometragem: number;
-	preco: number;
-	descricao: string;
-	imagens: Array<string>;
-	ativo: boolean;
-	criadoEm: string;
-	atualizadoEm: string;
-	user: {
-		id: string;
-		email: string;
-		nome: string;
-		telefone: 123;
-		bio: string;
-		imagem: string;
-		criadoEm: string;
-		atualizadoEm: string;
-		cpf: 109;
-		aniversario: string;
-		vendedor: boolean;
-		senha: string;
-		isActive: boolean;
-	};
-}
+export const UserPage = () => {
+	const {
+		createAdModal,
+		setCreateAdModal,
+		confirmNewAdModal,
+		editAdModal,
+		setEditAdModal,
+		deleteAdModal,
+		setSelectedAd,
+	} = useContext(AdContext);
 
-function UserPage() {
-	const [newAdModal, setNewAdModal] = useState(false);
-	const [editProfileModal, setEditProfileModal] = useState(false);
-	const [editAddressModal, setEditAddressModal] = useState(false);
-	const [editAdModal, setEditAdModal] = useState(false);
-	const [deleteAdModal, setDeleteAdModal] = useState(false);
-	const [selectedAd, setSelectedAd] = useState('');
-	const [confirmNewAdModal, setConfirmNewAdModal] = useState(false);
-	const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
-	const [anunciosInfo, setAnuncioInfo] = useState([]);
-
-	const token: string | null = localStorage.getItem('@user:Token');
-	const userId: string | null = localStorage.getItem('@user:ID');
+	const {
+		editProfileModal,
+		setEditProfileModal,
+		editAddressModal,
+		setEditAddressModal,
+		userInfo,
+		setUserInfo,
+		anunciosInfo,
+		setAnuncioInfo,
+		token,
+		userId,
+	} = useContext(AuthContext);
 
 	const navigate = useNavigate();
 
@@ -87,9 +51,9 @@ function UserPage() {
 		navigate('/');
 	}
 
-	const handleEditAd = (adId: string) => {
+	const handleEditAd = (ad: IAdInfo) => {
 		setEditAdModal(true);
-		setSelectedAd(adId);
+		setSelectedAd(ad);
 	};
 
 	useEffect(() => {
@@ -105,7 +69,8 @@ function UserPage() {
 					window.localStorage.clear();
 					navigate('/login');
 				});
-	}, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [editProfileModal]);
 
 	useEffect(() => {
 		token &&
@@ -120,7 +85,8 @@ function UserPage() {
 					window.localStorage.clear();
 					navigate('/login');
 				});
-	}, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [createAdModal, editAdModal, deleteAdModal]);
 
 	return (
 		<Div>
@@ -184,7 +150,7 @@ function UserPage() {
 					fontColor="#4529E6"
 					fontColorHover=""
 					onClick={() => {
-						setNewAdModal(true);
+						setCreateAdModal(true);
 					}}
 					type="button"
 					className="criarAnuncios"
@@ -197,9 +163,9 @@ function UserPage() {
 			</ThemeTitle>
 			<Main>
 				<Products>
-					{anunciosInfo.map((anuncio: IAnuncioInfo) => {
+					{anunciosInfo.map((anuncio: IAdInfo, index) => {
 						return (
-							<ProductContainer>
+							<ProductContainer key={index}>
 								<div>
 									<img
 										className="product-img"
@@ -244,7 +210,7 @@ function UserPage() {
 										fontColor="#212529"
 										fontColorHover=""
 										onClick={() => {
-											handleEditAd(anuncio.id);
+											handleEditAd(anuncio);
 										}}
 										type="button"
 										className="editarAnuncios"
@@ -280,43 +246,17 @@ function UserPage() {
 			</Pagination>
 			<Footer />
 
-			{newAdModal && (
-				<NewAdModal
-					setNewAdModal={setNewAdModal}
-					setConfirmNewAdModal={setConfirmNewAdModal}
-				/>
-			)}
-			{confirmNewAdModal && (
-				<ConfirmNewAdModal
-					setConfirmNewAdModal={setConfirmNewAdModal}
-				/>
-			)}
-
-			{editProfileModal && (
-				<EditProfile
-					setEditProfileModal={setEditProfileModal}
-					userInfo={userInfo}
-				/>
-			)}
+			{editProfileModal && <EditProfile />}
 
 			{/* {<EditAddress setEditAddressModal={setEditAddressModal} />} */}
 
-			{editAdModal && (
-				<EditAd
-					setEditAdModal={setEditAdModal}
-					setDeleteAdModal={setDeleteAdModal}
-					selectedAd={selectedAd}
-				/>
-			)}
+			{createAdModal && <CreateAdModal />}
 
-			{deleteAdModal && (
-				<DeleteAd
-					setDeleteAdModal={setDeleteAdModal}
-					selectedAd={selectedAd}
-				/>
-			)}
+			{confirmNewAdModal && <ConfirmNewAdModal />}
+
+			{editAdModal && <EditAd />}
+
+			{deleteAdModal && <DeleteAd />}
 		</Div>
 	);
-}
-
-export default UserPage;
+};

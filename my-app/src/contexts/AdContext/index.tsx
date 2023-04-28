@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { api } from '../../services/api';
 import { fipe } from '../../services/fipe';
+import { IEditUserResponse } from '../UserContext';
 
 interface IAdContextProps {
 	children: React.ReactNode;
@@ -34,6 +35,32 @@ interface INewAdResponse {
 	imagens: string[];
 }
 
+export interface IAdInfo {
+	id: string;
+	marca: string;
+	modelo: string;
+	ano: string;
+	combustivel: string;
+	cor: string;
+	quilometragem: string;
+	preco: string;
+	descricao: string;
+	imagens: string[];
+	ativo: boolean;
+	criadoEm: string;
+	atualizadoEm: string;
+	user: IEditUserResponse;
+}
+
+export interface IEditAdRequest {
+	cor?: string;
+	quilometragem?: string;
+	preco?: string;
+	descricao?: string;
+	publicado?: boolean;
+	imagens?: string[];
+}
+
 interface ICarName {
 	name: string;
 }
@@ -48,16 +75,40 @@ export interface IModel {
 }
 
 interface IAdContext {
-	addNewAd(data: INewAd): Promise<INewAdResponse | undefined>;
+	createAdModal: boolean;
+	setCreateAdModal: React.Dispatch<React.SetStateAction<boolean>>;
+	confirmNewAdModal: boolean;
+	setConfirmNewAdModal: React.Dispatch<React.SetStateAction<boolean>>;
+	editAdModal: boolean;
+	setEditAdModal: React.Dispatch<React.SetStateAction<boolean>>;
+	deleteAdModal: boolean;
+	setDeleteAdModal: React.Dispatch<React.SetStateAction<boolean>>;
+
 	brands: string[];
+	selectedAd: IAdInfo | undefined;
+	setSelectedAd: React.Dispatch<React.SetStateAction<IAdInfo | undefined>>;
 	selectedModel: IModel;
+
 	modelsByBrand(brand: string): Promise<string[] | undefined>;
 	modelData(brand: string, model: string): Promise<IModel | undefined>;
+
+	createAd(data: INewAd): Promise<INewAdResponse | undefined>;
+	editAd(
+		data: IEditAdRequest,
+		id: string
+	): Promise<INewAdResponse | undefined>;
+	deleteAd(id: string): Promise<void>;
 }
 
 export const AdContext = createContext<IAdContext>({} as IAdContext);
 
 export const AdProvider = ({ children }: IAdContextProps) => {
+	const [createAdModal, setCreateAdModal] = useState(false);
+	const [confirmNewAdModal, setConfirmNewAdModal] = useState(false);
+	const [editAdModal, setEditAdModal] = useState(false);
+	const [deleteAdModal, setDeleteAdModal] = useState(false);
+	const [selectedAd, setSelectedAd] = useState<IAdInfo | undefined>();
+
 	const [brands, setBrands] = useState<string[]>([]);
 	const [selectedModel, setSelectedModel] = useState<IModel>({
 		id: '',
@@ -87,6 +138,7 @@ export const AdProvider = ({ children }: IAdContextProps) => {
 		};
 
 		allBrands();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const modelsByBrand = async (
@@ -120,16 +172,53 @@ export const AdProvider = ({ children }: IAdContextProps) => {
 		}
 	};
 
-	const addNewAd = async (
+	const createAd = async (
 		data: INewAd
 	): Promise<INewAdResponse | undefined> => {
 		const token: string | null = localStorage.getItem('@user:Token');
+
 		try {
 			const res = await api.post<INewAdResponse>('advertisement', data, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
+
 			return res.data;
 		} catch (error: any) {
+			console.error(error);
+		}
+	};
+
+	const editAd = async (
+		data: IEditAdRequest,
+		id: string
+	): Promise<INewAdResponse | undefined> => {
+		const token: string | null = localStorage.getItem('@user:Token');
+
+		try {
+			const res = await api.patch<INewAdResponse>(
+				`advertisement/${id}`,
+				data,
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+
+			return res.data;
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const deleteAd = async (id: string): Promise<void> => {
+		const token: string | null = localStorage.getItem('@user:Token');
+
+		try {
+			await api.delete(`advertisement/${id}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+
+			setDeleteAdModal(false);
+		} catch (error) {
 			console.error(error);
 		}
 	};
@@ -137,11 +226,23 @@ export const AdProvider = ({ children }: IAdContextProps) => {
 	return (
 		<AdContext.Provider
 			value={{
+				createAdModal,
+				setCreateAdModal,
+				confirmNewAdModal,
+				setConfirmNewAdModal,
+				editAdModal,
+				setEditAdModal,
+				deleteAdModal,
+				setDeleteAdModal,
 				brands,
+				selectedAd,
+				setSelectedAd,
 				selectedModel,
 				modelsByBrand,
 				modelData,
-				addNewAd,
+				createAd,
+				editAd,
+				deleteAd,
 			}}
 		>
 			{children}
