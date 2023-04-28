@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import {
 	DivButtonsModal,
 	DivHeaderModal,
@@ -9,18 +9,10 @@ import {
 } from '../style';
 import { ThemeTitle } from '../../../styles/typography';
 import Button from '../../buttons';
+import { AdContext } from '../../../contexts/AdContext';
 
-interface IProps {
-	setDeleteAdModal: React.Dispatch<React.SetStateAction<boolean>>;
-	selectedAd: string;
-}
-
-export const DeleteAd = (props: IProps) => {
-	const { setDeleteAdModal, selectedAd } = props;
-
-	const handleClick = () => {
-		console.log(selectedAd);
-	};
+export const DeleteAd = () => {
+	const { setDeleteAdModal, selectedAd, deleteAd } = useContext(AdContext);
 
 	const contentRef = useRef<HTMLDivElement>(null);
 
@@ -35,6 +27,7 @@ export const DeleteAd = (props: IProps) => {
 		return () => {
 			document.removeEventListener('mousedown', handleOutclick);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -97,7 +90,7 @@ export const DeleteAd = (props: IProps) => {
 							fontColor="var(--color-alert1)"
 							fontColorHover="var(--color-alert2)"
 							onClick={() => {
-								handleClick();
+								deleteAd(selectedAd!.id);
 							}}
 							type="button"
 							className=""

@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router';
 import HomePage from '../pages/HomePage';
 import RegisterPage from '../pages/Register';
 import LoginPage from '../pages/Login';
-import UserPage from '../pages/UserPage';
+import { UserPage } from '../pages/UserPage';
 import PasswordPage from '../pages/PasswordPage';
 import { AdPage } from '../pages/AdPage';
 import ViewUserPage from '../pages/ViewUserPage';

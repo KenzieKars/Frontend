@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import {
 	DivHeaderModal,
 	StyledContent,
@@ -8,13 +8,10 @@ import {
 } from '../style';
 import { ThemeTitle } from '../../../styles/typography';
 import Button from '../../buttons';
+import { AdContext } from '../../../contexts/AdContext';
 
-interface IProps {
-	setConfirmNewAdModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export const ConfirmNewAdModal = (props: IProps) => {
-	const { setConfirmNewAdModal } = props;
+export const ConfirmNewAdModal = () => {
+	const { setConfirmNewAdModal } = useContext(AdContext);
 
 	const contentRef = useRef<HTMLDivElement>(null);
 
@@ -30,6 +27,7 @@ export const ConfirmNewAdModal = (props: IProps) => {
 		return () => {
 			document.removeEventListener('mousedown', handleOutclick);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

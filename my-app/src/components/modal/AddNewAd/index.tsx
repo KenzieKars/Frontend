@@ -14,27 +14,30 @@ import {
 import { Input } from '../../input';
 import Button from '../../buttons';
 import { ThemeTitle } from '../../../styles/typography';
-import { schema } from '../../../serializers/newAd/newAd';
+import { schema } from '../../../serializers/adSchemas/newAd';
 import { AdContext, INewAd } from '../../../contexts/AdContext';
 import { LabelSelect } from '../../select';
 
-interface IProps {
-	setNewAdModal: React.Dispatch<React.SetStateAction<boolean>>;
-	setConfirmNewAdModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export const NewAdModal = (props: IProps) => {
-	const { setNewAdModal, setConfirmNewAdModal } = props;
-
-	const { brands, selectedModel, modelsByBrand, modelData, addNewAd } =
-		useContext(AdContext);
+export const CreateAdModal = () => {
+	const {
+		setCreateAdModal,
+		setConfirmNewAdModal,
+		brands,
+		selectedModel,
+		modelsByBrand,
+		modelData,
+		createAd,
+	} = useContext(AdContext);
 
 	const [models, setModels] = useState<string[] | undefined>([]);
 	const [selectedBrand, setSelectedBrand] = useState('');
+	const [submitWithBrand, setSubmitWithBrand] = useState(false);
+	const [submitWithModel, setSubmitWithModel] = useState(false);
 
 	const [mainImage, setMainImage] = useState('');
 	const [firstImage, setFirstImage] = useState('');
 	const [secondImage, setSecondImage] = useState('');
+	const [submitWithImage, setSubmitWithImage] = useState(false);
 
 	const handleBrandChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
 		const { value } = evt.target;
@@ -63,6 +66,12 @@ export const NewAdModal = (props: IProps) => {
 	const handleClick = async () => {
 		const dataForm = getValues();
 
+		selectedBrand ? setSubmitWithBrand(false) : setSubmitWithBrand(true);
+
+		selectedModel.id ? setSubmitWithModel(false) : setSubmitWithModel(true);
+
+		mainImage ? setSubmitWithImage(false) : setSubmitWithImage(true);
+
 		const images = [mainImage, firstImage, secondImage];
 
 		const newAd: INewAd = {
@@ -87,9 +96,9 @@ export const NewAdModal = (props: IProps) => {
 			newAd.combustivel = 'elétrico';
 		}
 
-		const createdNewAd = await addNewAd(newAd);
+		const createdNewAd = await createAd(newAd);
 
-		createdNewAd?.id && setNewAdModal(false);
+		createdNewAd?.id && setCreateAdModal(false);
 		createdNewAd?.id && setConfirmNewAdModal(true);
 	};
 
@@ -107,7 +116,7 @@ export const NewAdModal = (props: IProps) => {
 	useEffect(() => {
 		const handleOutclick = (evt: MouseEvent) => {
 			const target = evt.target as HTMLDivElement;
-			!contentRef.current?.contains(target) && setNewAdModal(false);
+			!contentRef.current?.contains(target) && setCreateAdModal(false);
 		};
 
 		document.addEventListener('mousedown', handleOutclick);
@@ -115,6 +124,7 @@ export const NewAdModal = (props: IProps) => {
 		return () => {
 			document.removeEventListener('mousedown', handleOutclick);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -137,7 +147,7 @@ export const NewAdModal = (props: IProps) => {
 							fontColor="var(--color-grey4)"
 							fontColorHover=""
 							onClick={() => {
-								setNewAdModal(false);
+								setCreateAdModal(false);
 							}}
 							type="button"
 							className=""
@@ -160,6 +170,11 @@ export const NewAdModal = (props: IProps) => {
 									id="brand"
 									{...register('marca')}
 									onChange={handleBrandChange}
+									className={
+										selectedBrand || !submitWithBrand
+											? ''
+											: 'selectWithError'
+									}
 								>
 									<option value="empty">
 										Selecione uma marca
@@ -181,6 +196,11 @@ export const NewAdModal = (props: IProps) => {
 									id="model"
 									{...register('modelo')}
 									onChange={handleModelData}
+									className={
+										selectedModel.id || !submitWithModel
+											? ''
+											: 'selectWithError'
+									}
 									disabled={
 										selectedBrand === 'empty' ||
 										!selectedBrand
@@ -204,7 +224,11 @@ export const NewAdModal = (props: IProps) => {
 								label="Ano"
 								fieldName="year"
 								type="text"
-								placeholder={selectedModel?.year ?? '-'}
+								placeholder={
+									selectedModel?.year
+										? selectedModel.year
+										: '-'
+								}
 								disabled
 								{...register('ano')}
 							/>
@@ -230,6 +254,9 @@ export const NewAdModal = (props: IProps) => {
 								type="text"
 								placeholder="30.000"
 								{...register('quilometragem')}
+								className={
+									errors.quilometragem && 'inputWithError'
+								}
 							/>
 							<Input
 								label="Cor"
@@ -237,6 +264,7 @@ export const NewAdModal = (props: IProps) => {
 								type="text"
 								placeholder="Branco"
 								{...register('cor')}
+								className={errors.cor && 'inputWithError'}
 							/>
 							<Input
 								label="Preço tabela FIPE"
@@ -255,6 +283,7 @@ export const NewAdModal = (props: IProps) => {
 								type="text"
 								placeholder="R$ 50.000,00"
 								{...register('preco')}
+								className={errors.preco && 'inputWithError'}
 							/>
 						</StyledDivInputs>
 						<Input
@@ -262,8 +291,8 @@ export const NewAdModal = (props: IProps) => {
 							fieldName="description"
 							placeholder="Digitar descrição..."
 							{...register('descricao')}
+							className={errors.descricao && 'inputWithError'}
 						/>
-
 						<Input
 							label="Imagem da capa"
 							fieldName="mainImage"
@@ -271,6 +300,11 @@ export const NewAdModal = (props: IProps) => {
 							placeholder="https://image.com"
 							value={mainImage}
 							onChange={(e) => setMainImage(e.target.value)}
+							className={
+								mainImage || !submitWithImage
+									? ''
+									: 'inputWithError'
+							}
 						/>
 						<Input
 							label="1ª Imagem da galeria"
@@ -310,7 +344,7 @@ export const NewAdModal = (props: IProps) => {
 								fontColor="var(--color-grey2)"
 								fontColorHover="var(--color-grey0)"
 								onClick={() => {
-									setNewAdModal(false);
+									setCreateAdModal(false);
 								}}
 								type="button"
 								className=""

@@ -1,13 +1,14 @@
+import React, { useState, createContext, useEffect } from 'react';
 import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
-import React, { useState, createContext, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
+import { IAdInfo } from '../AdContext';
 
 interface IAuthContextProps {
 	children: React.ReactNode;
 }
 
-interface IUserInfo {
+export interface IUserInfo {
 	id: string;
 	nome: string;
 	email: string;
@@ -45,42 +46,58 @@ export interface IEditUser {
 	nome: string;
 }
 
-// interface IEditUserResponse {
-// 	vendedor: string;
-// 	aniversario: string;
-// 	isActive: string;
-// 	cpf: string;
-// 	imagem: string;
-// 	bio: string;
-// 	telefone: string;
-// 	senha: string;
-// 	email: string;
-// 	nome: string;
-// 	id: string;
-// }
-
-interface IAuthContext {
-	userInfo: IUserInfo;
-	token: string | null;
-	userId: string | null;
-	login: (user: ILogin) => void;
-	signUp: (user: ISignUp) => void;
-	editUser: (user: IEditUser, id: string) => void;
-	deleteUser: () => void;
+export interface IEditUserResponse {
+	vendedor: string;
+	aniversario: string;
+	isActive: string;
+	cpf: string;
+	imagem: string;
+	bio: string;
+	telefone: string;
+	senha: string;
+	email: string;
+	nome: string;
+	id: string;
 }
 
 interface IDecodedToken {
 	sub: string;
 }
 
+interface IAuthContext {
+	editProfileModal: boolean;
+	setEditProfileModal: React.Dispatch<React.SetStateAction<boolean>>;
+	editAddressModal: boolean;
+	setEditAddressModal: React.Dispatch<React.SetStateAction<boolean>>;
+
+	userInfo: IUserInfo;
+	setUserInfo: React.Dispatch<React.SetStateAction<IUserInfo>>;
+	anunciosInfo: IAdInfo[];
+	setAnuncioInfo: React.Dispatch<React.SetStateAction<IAdInfo[]>>;
+	token: string | null;
+	userId: string | null;
+
+	login: (user: ILogin) => void;
+	signUp: (user: ISignUp) => void;
+	editUser(
+		user: IEditUser,
+		id: string
+	): Promise<IEditUserResponse | undefined>;
+	deleteUser: () => void;
+}
+
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const AuthProvider = ({ children }: IAuthContextProps) => {
+	const [editProfileModal, setEditProfileModal] = useState(false);
+	const [editAddressModal, setEditAddressModal] = useState(false);
+
+	const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
+	const [anunciosInfo, setAnuncioInfo] = useState<IAdInfo[]>([] as IAdInfo[]);
+
 	const navigate = useNavigate();
 	const token: string | null = localStorage.getItem('@user:Token');
 	const userId: string | null = localStorage.getItem('@user:ID');
-
-	const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
 
 	useEffect(() => {
 		token &&
@@ -95,6 +112,7 @@ export const AuthProvider = ({ children }: IAuthContextProps) => {
 					window.localStorage.clear();
 					navigate('/login');
 				});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const login = (user: ILogin) => {
@@ -124,13 +142,18 @@ export const AuthProvider = ({ children }: IAuthContextProps) => {
 			});
 	};
 
-	const editUser = async (user: IEditUser, id: string) => {
+	const editUser = async (
+		user: IEditUser,
+		id: string
+	): Promise<IEditUserResponse | undefined> => {
 		try {
 			const res = await api.patch(`/users/${id}`, user, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 
 			res && setUserInfo(res.data);
+
+			return res.data;
 		} catch (error) {
 			console.error(error);
 		}
@@ -149,9 +172,16 @@ export const AuthProvider = ({ children }: IAuthContextProps) => {
 	return (
 		<AuthContext.Provider
 			value={{
+				editProfileModal,
+				setEditProfileModal,
+				editAddressModal,
+				setEditAddressModal,
+				userInfo,
+				setUserInfo,
+				anunciosInfo,
+				setAnuncioInfo,
 				token,
 				userId,
-				userInfo,
 				login,
 				signUp,
 				editUser,

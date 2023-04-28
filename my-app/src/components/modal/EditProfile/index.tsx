@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { IUserInfo } from '../../../pages/UserPage';
 import { ThemeTitle } from '../../../styles/typography';
 import Button from '../../buttons';
 import { Input } from '../../input';
@@ -16,28 +15,118 @@ import { editProfileSchema } from '../../../serializers/editProfile/editProfile'
 import { useContext, useEffect, useRef } from 'react';
 import { AuthContext, IEditUser } from '../../../contexts/UserContext';
 
-interface IProps {
-	setEditProfileModal: React.Dispatch<React.SetStateAction<boolean>>;
-	userInfo: IUserInfo;
-}
+export const EditProfile = () => {
+	const { setEditProfileModal, userInfo, editUser } = useContext(AuthContext);
 
-export const EditProfile = (props: IProps) => {
-	const { setEditProfileModal, userInfo } = props;
+	const handleCPFInput = (value: string) => {
+		const cpf = value?.replace(/\D/g, '').slice(0, 11);
 
-	const { editUser } = useContext(AuthContext);
+		const cpfLength = cpf.length;
 
-	const handleClick = () => {
-		const dataForm = getValues();
+		if (cpfLength <= 3) {
+			return cpf;
+		}
 
-		editUser(dataForm, userInfo.id);
+		if (cpfLength <= 6) {
+			return `${cpf.slice(0, 3)}.${cpf.slice(3)}`;
+		}
+
+		if (cpfLength <= 9) {
+			return `${cpf.slice(0, 3)}.${cpf.slice(3, 6)}.${cpf.slice(6)}`;
+		}
+
+		return `${cpf.slice(0, 3)}.${cpf.slice(3, 6)}.${cpf.slice(
+			6,
+			9
+		)}-${cpf.slice(9)}`;
 	};
 
-	const {
-		register,
-		handleSubmit,
-		getValues,
-		formState: { errors },
-	} = useForm<IEditUser>({
+	const handleCPFChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = evt.target;
+		const formattedCPF = handleCPFInput(value);
+		setValue('cpf', formattedCPF);
+	};
+
+	const handleContactInput = (value: string) => {
+		const phoneNumber = value?.replace(/\D/g, '').slice(0, 11);
+
+		const phoneNumberLength = phoneNumber.length;
+
+		if (phoneNumberLength <= 2) {
+			return `(${phoneNumber}`;
+		}
+
+		if (phoneNumberLength <= 6) {
+			return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2)}`;
+		}
+
+		if (phoneNumberLength <= 10) {
+			return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(
+				2,
+				6
+			)}-${phoneNumber.slice(6)}`;
+		}
+
+		return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(
+			2,
+			7
+		)}-${phoneNumber.slice(7)}`;
+	};
+
+	const handleContactChange = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		const { value } = event.target;
+		const formattedPhone = handleContactInput(value);
+		setValue('telefone', formattedPhone);
+	};
+
+	const handleBirthdayInput = (value: string) => {
+		const date = value?.replace(/\D/g, '').slice(0, 8);
+		const dateLength = date.length;
+
+		if (dateLength <= 2) {
+			return `${date}`;
+		}
+
+		if (dateLength <= 4) {
+			return `${date.slice(0, 2)}/${date.slice(2)}`;
+		}
+
+		return `${date.slice(0, 2)}/${date.slice(2, 4)}/${date.slice(4)}`;
+	};
+
+	const handleBirthdayChange = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		const { value } = event.target;
+		const formattedDate = handleBirthdayInput(value);
+		setValue('aniversario', formattedDate);
+	};
+
+	const handleClick = async () => {
+		const dataForm = getValues();
+
+		dataForm.nome = dataForm.nome ? dataForm.nome : userInfo.nome;
+		dataForm.email = dataForm.email ? dataForm.email : userInfo.email;
+		dataForm.cpf = dataForm.cpf ? dataForm.cpf : userInfo.cpf;
+		dataForm.telefone = dataForm.telefone
+			? dataForm.telefone
+			: userInfo.telefone;
+		dataForm.aniversario = dataForm.aniversario
+			? dataForm.aniversario
+			: userInfo.aniversario;
+		dataForm.bio = dataForm.bio ? dataForm.bio : userInfo.bio;
+
+		dataForm.cpf = dataForm.cpf.replace(/\D/g, '');
+		dataForm.telefone = dataForm.telefone.replace(/\D/g, '');
+
+		const res = await editUser(dataForm, userInfo.id);
+
+		res?.id && setEditProfileModal(false);
+	};
+
+	const { register, handleSubmit, setValue, getValues } = useForm<IEditUser>({
 		resolver: yupResolver(editProfileSchema),
 	});
 
@@ -54,6 +143,7 @@ export const EditProfile = (props: IProps) => {
 		return () => {
 			document.removeEventListener('mousedown', handleOutclick);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -110,22 +200,28 @@ export const EditProfile = (props: IProps) => {
 							label="CPF"
 							fieldName="cpf"
 							type="text"
-							placeholder={userInfo.cpf}
+							placeholder={handleCPFInput(userInfo.cpf)}
 							{...register('cpf')}
+							onChange={handleCPFChange}
 						/>
 						<Input
 							label="Celular"
 							fieldName="cel"
 							type="text"
-							placeholder={userInfo.telefone}
+							placeholder={handleContactInput(userInfo.telefone)}
 							{...register('telefone')}
+							onChange={handleContactChange}
 						/>
 						<Input
 							label="Data de nascimento"
 							fieldName="birthdate"
 							type="text"
-							placeholder={userInfo.aniversario}
+							placeholder={handleBirthdayInput(
+								userInfo.aniversario
+							)}
 							{...register('aniversario')}
+							onChange={handleBirthdayChange}
+							maxLength={10}
 						/>
 						<Input
 							label="Descrição"
