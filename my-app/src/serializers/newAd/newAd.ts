@@ -6,7 +6,7 @@ export const schema = yup.object({
 	ano: yup.string().required('Campo obrigatório!'),
 	combustivel: yup
 		.string()
-		.oneOf(['gasolina', 'etanol'], 'Tipo inválido de combustivel')
+		.oneOf(['flex', 'híbrido', 'elétrico'], 'Tipo inválido de combustivel')
 		.required('Campo obrigatório!'),
 	cor: yup.string().required('Campo obrigatório!'),
 	quilometragem: yup.number().required('Campo obrigatório!'),

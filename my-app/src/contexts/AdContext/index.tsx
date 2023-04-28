@@ -1,5 +1,6 @@
-import React, { createContext } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { api } from '../../services/api';
+import { fipe } from '../../services/fipe';
 
 interface IAdContextProps {
 	children: React.ReactNode;
@@ -12,7 +13,7 @@ export interface INewAd {
 	combustivel: string;
 	cor: string;
 	quilometragem: string;
-	preco: string;
+	preco: number;
 	descricao: string;
 	imagens: string[];
 }
@@ -33,13 +34,92 @@ interface INewAdResponse {
 	imagens: string[];
 }
 
+interface ICarName {
+	name: string;
+}
+
+export interface IModel {
+	id: string;
+	name: string;
+	brand: string;
+	year: string;
+	fuel: number;
+	value: number;
+}
+
 interface IAdContext {
 	addNewAd(data: INewAd): Promise<INewAdResponse | undefined>;
+	brands: string[];
+	selectedModel: IModel;
+	modelsByBrand(brand: string): Promise<string[] | undefined>;
+	modelData(brand: string, model: string): Promise<IModel | undefined>;
 }
 
 export const AdContext = createContext<IAdContext>({} as IAdContext);
 
 export const AdProvider = ({ children }: IAdContextProps) => {
+	const [brands, setBrands] = useState<string[]>([]);
+	const [selectedModel, setSelectedModel] = useState<IModel>({
+		id: '',
+		name: '',
+		brand: '',
+		year: '',
+		fuel: 0,
+		value: 0,
+	});
+
+	useEffect(() => {
+		const allBrands = async (): Promise<string[] | undefined> => {
+			try {
+				const res = await fipe.get('cars');
+
+				res.data && setBrands([]);
+
+				setBrands((previousBrands) => [
+					...previousBrands,
+					...Object.keys(res.data),
+				]);
+
+				return brands;
+			} catch (error: any) {
+				console.error(error);
+			}
+		};
+
+		allBrands();
+	}, []);
+
+	const modelsByBrand = async (
+		brand: string
+	): Promise<string[] | undefined> => {
+		try {
+			const res = await fipe.get('cars');
+
+			return res.data[brand].map((model: ICarName) => model.name);
+		} catch (error: any) {
+			console.error(error);
+		}
+	};
+
+	const modelData = async (
+		brand: string,
+		model: string
+	): Promise<IModel | undefined> => {
+		try {
+			const res = await fipe.get(`cars?brand=${brand}`);
+
+			res.data.forEach((car: IModel) => {
+				if (car.name === model) {
+					setSelectedModel(car);
+				}
+			});
+
+			return selectedModel;
+		} catch (error: any) {
+			console.error(error);
+		}
+	};
+
 	const addNewAd = async (
 		data: INewAd
 	): Promise<INewAdResponse | undefined> => {
@@ -55,6 +135,16 @@ export const AdProvider = ({ children }: IAdContextProps) => {
 	};
 
 	return (
-		<AdContext.Provider value={{ addNewAd }}>{children}</AdContext.Provider>
+		<AdContext.Provider
+			value={{
+				brands,
+				selectedModel,
+				modelsByBrand,
+				modelData,
+				addNewAd,
+			}}
+		>
+			{children}
+		</AdContext.Provider>
 	);
 };

@@ -87,28 +87,55 @@ export const StyledDivInputs = styled.div`
 	gap: 10px;
 `;
 
-export const StyledDescriptionTextarea = styled.textarea`
-	color: var(--color-grey2);
+// export const StyledDescriptionTextarea = styled.textarea`
+// 	color: var(--color-grey2);
 
-	resize: none;
+// 	resize: none;
 
-	width: 100%;
-	min-height: 100px;
-	padding: 20px 10px;
+// 	width: 100%;
+// 	min-height: 100px;
+// 	padding: 20px 10px;
 
-	border: 1.5px solid var(--color-grey7);
-	border-radius: 4px;
+// 	border: 1.5px solid var(--color-grey7);
+// 	border-radius: 4px;
 
-	font-weight: 400;
-	font-size: 16px;
-	font-family: 'Inter';
-	font-style: normal;
-	line-height: 0px;
-`;
+// 	font-weight: 400;
+// 	font-size: 16px;
+// 	font-family: 'Inter';
+// 	font-style: normal;
+// 	line-height: 0px;
+// `;
 
 export const DivButtonsModal = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: end;
 	gap: 10px;
+
+	.isPublishedBtn {
+		width: 50%;
+	}
+`;
+
+export const StyledParagraph = styled.p`
+	color: var(--color-grey2);
+
+	margin-top: 20px;
+	margin-bottom: 20px;
+
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 20px;
+`;
+
+export const StyledPublishedLabel = styled.label`
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	font-weight: 500;
+	font-size: 14px;
+	font-family: 'Inter';
 `;
