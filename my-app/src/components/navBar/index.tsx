@@ -1,84 +1,117 @@
-import Button from "../buttons";
-import MobileMenu from "../mobileMenu";
-import { DivNavBarUser, Nav } from "./style";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useEffect } from "react";
-import { api } from "../../services/api";
+import Button from '../buttons';
+import MobileMenu from '../mobileMenu';
+import { DivNavBarUser, DivUserInfo, Nav } from './style';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { AuthContext } from '../../contexts/UserContext';
+import { MenuButton } from '../alternativeMenu';
+import logo from '../../assets/logo.svg';
+import { api } from '../../services/api';
+import { IoLogOutOutline } from 'react-icons/io5';
 
+export const NavBar = () => {
+	const { userInfo, setUserInfo, token, userId } = useContext(AuthContext);
 
-const logo = require("../../assets/logo.png") as string;
-interface IUserInfo {
-  id: string  
-  nome: string
-  email: string              
-  telefone:string
-  bio:string
-  imagem:string
-  cpf:string
-  aniversario:string
-  vendedor?: boolean;
-}
+	const navigate = useNavigate();
+	const location = useLocation();
 
+	const handleLogout = () => {
+		window.localStorage.removeItem('@user:Token');
+		window.localStorage.removeItem('@user:ID');
 
-export const NavBar = () => { 
-  const navigate = useNavigate()
-    const userId = localStorage.getItem("@user:ID")
-    const token = localStorage.getItem("@user:Token")
-    const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
+		navigate('/');
+	};
 
-    useEffect(() => {
-        api.get(`/users/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-          .then((res) => {
-              setUserInfo(res.data.foundUserByParam);
-          })
-          .catch((err) => {
-            window.localStorage.clear();
-          });
-    }, []);
-  return (
-    <>
-      <Nav>
-        <figure>
-          <img  onClick={()=>{navigate("/")}} src={logo} alt="logo da empresa" />
-        </figure>
-        <DivNavBarUser>
-        <Button
-            backgroundColor="#ffffff"
-            backgroundColorHover="#212529"
-            border=""
-            fontColor="#495057"
-            fontColorHover="#ffffff"
-            className={userInfo.nome? "none" : "login"}
-            onClick={()=>{navigate("/login")}}
-          >
-           
-           Fazer Login
+	useEffect(() => {
+		const handleUser = async () => {
+			if (token) {
+				try {
+					const res = await api.get(`/users/${userId}`, {
+						headers: { Authorization: `Bearer ${token}` },
+					});
 
-          </Button>
-          
-          <Button
-            backgroundColor="#ffffff"
-            backgroundColorHover="#212529"
-            border="#ADB5BD"
-            fontColor="#212529"
-            fontColorHover="#ffffff"
-            className={userInfo.nome? "none" : ""}
-            onClick={()=>{navigate("/register")}}
-          >
-             Cadastrar
-          </Button>
-          <div className={userInfo.nome? "logado" : "none"} onClick={()=>{navigate("/user")}}>
-              <img src="https://cdn-icons-png.flaticon.com/512/21/21104.png" alt="user" />
-              {userInfo.nome}
-          </div>
-        </DivNavBarUser>
-      </Nav>
-      <MobileMenu></MobileMenu>
-    </>
-  );
+					setUserInfo(res.data.foundUserByParam);
+				} catch (error) {
+					window.localStorage.removeItem('@user:Token');
+					window.localStorage.removeItem('@user:ID');
+					console.error(error);
+				}
+			}
+		};
+		handleUser();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	return (
+		<>
+			<Nav>
+				<figure>
+					<img
+						onClick={() => {
+							navigate('/');
+						}}
+						src={logo}
+						alt="Motors Shop"
+					/>
+				</figure>
+				<DivNavBarUser>
+					{!userInfo.id ? (
+						<>
+							<Button
+								backgroundColor="#ffffff"
+								backgroundColorHover="#212529"
+								border=""
+								fontColor="#495057"
+								fontColorHover="#ffffff"
+								onClick={() => {
+									navigate('/login');
+								}}
+							>
+								Fazer Login
+							</Button>
+							<Button
+								backgroundColor="#ffffff"
+								backgroundColorHover="#212529"
+								border="#ADB5BD"
+								fontColor="#212529"
+								fontColorHover="#ffffff"
+								onClick={() => {
+									navigate('/register');
+								}}
+							>
+								Cadastrar
+							</Button>
+						</>
+					) : (
+						<DivUserInfo>
+							<img src={userInfo.imagem} alt="user" />
+							<Button
+								backgroundColor="transparent"
+								backgroundColorHover="transparent"
+								border="transparent"
+								fontColor="var(--color-grey2)"
+								fontColorHover="var(--color-brand1)"
+								className="userBtn"
+								onClick={() => {
+									navigate('/user');
+								}}
+							>
+								{userInfo.nome}
+							</Button>
+							{location.pathname === '/user' ? (
+								<MenuButton />
+							) : (
+								<IoLogOutOutline
+									onClick={() => {
+										handleLogout();
+									}}
+								/>
+							)}
+						</DivUserInfo>
+					)}
+				</DivNavBarUser>
+			</Nav>
+			<MobileMenu />
+		</>
+	);
 };
-
-export default NavBar;

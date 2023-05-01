@@ -1,6 +1,6 @@
 import { Footer } from '../../components/footer';
 import { Main } from '../../components/main';
-import NavBar from '../../components/navBar';
+import { NavBar } from '../../components/navBar';
 import {
 	StyledBtnsCarModel,
 	StyledCommentTextarea,
