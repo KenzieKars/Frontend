@@ -10,24 +10,25 @@ import {
 	StyledOverlay,
 } from '../style';
 import { editAddressSchema } from '../../../serializers/editAddress/editAddress';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { ThemeTitle } from '../../../styles/typography';
 import { Input } from '../../input';
 import Button from '../../buttons';
+import { AuthContext, IEditAddress } from '../../../contexts/UserContext';
 
-interface IProps {
-	setEditAddressModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
+export const EditAddress = () => {
+	const { setEditAddressModal, userInfo, editUserAddress } =
+		useContext(AuthContext);
 
-export const EditAddress = (props: IProps) => {
-	const { setEditAddressModal } = props;
+	const handleClick = async () => {
+		const dataForm = getValues();
 
-	const {
-		register,
-		handleSubmit,
-		getValues,
-		formState: { errors },
-	} = useForm({
+		const res = await editUserAddress(dataForm, userInfo.address.id);
+
+		res?.id && setEditAddressModal(false);
+	};
+
+	const { register, handleSubmit, getValues } = useForm<IEditAddress>({
 		resolver: yupResolver(editAddressSchema),
 	});
 
@@ -44,6 +45,7 @@ export const EditAddress = (props: IProps) => {
 		return () => {
 			document.removeEventListener('mousedown', handleOutclick);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -74,7 +76,7 @@ export const EditAddress = (props: IProps) => {
 							X
 						</Button>
 					</DivHeaderModal>
-					<StyledForm>
+					<StyledForm onSubmit={handleSubmit(handleClick)}>
 						<ThemeTitle
 							tag="h2"
 							className=""
@@ -86,7 +88,7 @@ export const EditAddress = (props: IProps) => {
 							label="CEP"
 							fieldName="cep"
 							type="text"
-							placeholder="00000.000"
+							placeholder={userInfo.address.cep}
 							{...register('cep')}
 						/>
 						<StyledDivInputs>
@@ -94,14 +96,14 @@ export const EditAddress = (props: IProps) => {
 								label="Estado"
 								fieldName="estado"
 								type="text"
-								placeholder="Paraná"
+								placeholder={userInfo.address.estado}
 								{...register('estado')}
 							/>
 							<Input
 								label="Cidade"
 								fieldName="cidade"
 								type="text"
-								placeholder="Curitiba"
+								placeholder={userInfo.address.cidade}
 								{...register('cidade')}
 							/>
 						</StyledDivInputs>
@@ -109,7 +111,7 @@ export const EditAddress = (props: IProps) => {
 							label="Rua"
 							fieldName="rua"
 							type="text"
-							placeholder="Rua do paraná"
+							placeholder={userInfo.address.rua}
 							{...register('rua')}
 						/>
 						<StyledDivInputs>
@@ -117,14 +119,14 @@ export const EditAddress = (props: IProps) => {
 								label="Número"
 								fieldName="numero"
 								type="text"
-								placeholder="0000"
+								placeholder={userInfo.address.numero}
 								{...register('numero')}
 							/>
 							<Input
 								label="Complemento"
 								fieldName="complemento"
 								type="text"
-								placeholder="Apart 12"
+								placeholder={userInfo.address.complemento}
 								{...register('complemento')}
 							/>
 						</StyledDivInputs>
@@ -151,7 +153,9 @@ export const EditAddress = (props: IProps) => {
 								borderHover=""
 								fontColor="var(--color-brand4)"
 								fontColorHover="var(--color-whiteFixed)"
-								onClick={() => {}}
+								onClick={() => {
+									handleClick();
+								}}
 								type="submit"
 								className=""
 							>

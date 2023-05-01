@@ -18,6 +18,7 @@ export interface IUserInfo {
 	cpf: string;
 	aniversario: string;
 	vendedor?: boolean;
+	address: IEditAddressResponse;
 }
 
 export interface ILogin {
@@ -34,7 +35,8 @@ export interface ISignUp {
 	imagem: string;
 	cpf: string;
 	aniversario: string;
-	vendedor?: string;
+	vendedor?: boolean;
+	address: IEditAddress;
 }
 
 export interface IEditUser {
@@ -44,6 +46,24 @@ export interface IEditUser {
 	cpf: string;
 	email: string;
 	nome: string;
+}
+
+export interface IEditAddress {
+	complemento: string;
+	rua: string;
+	cidade: string;
+	numero: string;
+	cep: string;
+	estado: string;
+}
+export interface IEditAddressResponse {
+	id: string;
+	complemento: string;
+	rua: string;
+	cidade: string;
+	numero: string;
+	cep: string;
+	estado: string;
 }
 
 export interface IEditUserResponse {
@@ -69,6 +89,8 @@ interface IAuthContext {
 	setEditProfileModal: React.Dispatch<React.SetStateAction<boolean>>;
 	editAddressModal: boolean;
 	setEditAddressModal: React.Dispatch<React.SetStateAction<boolean>>;
+	deleteProfileModal: boolean;
+	setDeleteProfileModal: React.Dispatch<React.SetStateAction<boolean>>;
 
 	userInfo: IUserInfo;
 	setUserInfo: React.Dispatch<React.SetStateAction<IUserInfo>>;
@@ -83,7 +105,11 @@ interface IAuthContext {
 		user: IEditUser,
 		id: string
 	): Promise<IEditUserResponse | undefined>;
-	deleteUser: () => void;
+	editUserAddress(
+		address: IEditAddress,
+		id: string
+	): Promise<IEditAddressResponse | undefined>;
+	deleteUser(id: string): Promise<void>;
 }
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -91,55 +117,59 @@ export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 export const AuthProvider = ({ children }: IAuthContextProps) => {
 	const [editProfileModal, setEditProfileModal] = useState(false);
 	const [editAddressModal, setEditAddressModal] = useState(false);
+	const [deleteProfileModal, setDeleteProfileModal] = useState(false);
 
 	const [userInfo, setUserInfo] = useState<IUserInfo>({} as IUserInfo);
 	const [anunciosInfo, setAnuncioInfo] = useState<IAdInfo[]>([] as IAdInfo[]);
 
 	const navigate = useNavigate();
+
 	const token: string | null = localStorage.getItem('@user:Token');
 	const userId: string | null = localStorage.getItem('@user:ID');
 
 	useEffect(() => {
-		token &&
-			api
-				.get<IUserInfo>(`/users/${userId}`, {
-					headers: { Authorization: `Bearer ${token}` },
-				})
-				.then((res) => {
-					setUserInfo(res.data);
-				})
-				.catch((err) => {
-					window.localStorage.clear();
-					navigate('/login');
-				});
+		const handleUser = async () => {
+			if (token) {
+				try {
+					const res = await api.get(`/users/${userId}`, {
+						headers: { Authorization: `Bearer ${token}` },
+					});
+
+					setUserInfo(res.data.foundUserByParam);
+				} catch (error) {
+					window.localStorage.removeItem('@user:Token');
+					window.localStorage.removeItem('@user:ID');
+					console.error(error);
+				}
+			}
+		};
+		handleUser();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const login = (user: ILogin) => {
-		api.post('/login', { ...user })
-			.then((res) => {
-				window.localStorage.clear();
-				window.localStorage.setItem('@user:Token', res.data.token);
-				const decodedToken = jwtDecode(res.data.token) as IDecodedToken;
-				const userId = decodedToken.sub;
-				window.localStorage.setItem('@user:ID', userId);
-				console.log('Login bem sucedido!');
-				navigate('/', { replace: true });
-			})
-			.catch((err) => {
-				console.log('Email ou senha inválidos!');
-			});
+	const login = async (user: ILogin) => {
+		try {
+			const res = await api.post('/login', { ...user });
+
+			window.localStorage.setItem('@user:Token', res.data.token);
+			const decodedToken = jwtDecode(res.data.token) as IDecodedToken;
+			const userId = decodedToken.sub;
+			window.localStorage.setItem('@user:ID', userId);
+
+			navigate('/', { replace: true });
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
-	const signUp = (user: ISignUp) => {
-		console.log(user);
-		api.post('/users', { ...user })
-			.then((res) => {
-				console.log('Cadastro efetuado com sucesso');
-			})
-			.catch((err) => {
-				console.log('E-mail já cadastrado!');
-			});
+	const signUp = async (user: ISignUp) => {
+		try {
+			const res = await api.post('/users', { ...user });
+
+			res.data.id && navigate('/login', { replace: true });
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const editUser = async (
@@ -159,15 +189,30 @@ export const AuthProvider = ({ children }: IAuthContextProps) => {
 		}
 	};
 
-	function deleteUser() {
-		api.delete(`/users/${userId}`, {
-			headers: { Authorization: `Bearer ${token}` },
-		}).then(() => {
-			window.localStorage.clear();
-			console.log('Sua conta foi deletada com sucesso!');
-			navigate('/login');
-		});
-	}
+	const editUserAddress = async (
+		address: IEditAddress,
+		addressId: string
+	): Promise<IEditAddressResponse | undefined> => {
+		try {
+			const res = await api.patch(`/address/${addressId}`, address, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+
+			return res.data;
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const deleteUser = async (id: string): Promise<void> => {
+		try {
+			api.delete(`/users/${id}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	return (
 		<AuthContext.Provider
@@ -176,6 +221,8 @@ export const AuthProvider = ({ children }: IAuthContextProps) => {
 				setEditProfileModal,
 				editAddressModal,
 				setEditAddressModal,
+				deleteProfileModal,
+				setDeleteProfileModal,
 				userInfo,
 				setUserInfo,
 				anunciosInfo,
@@ -185,6 +232,7 @@ export const AuthProvider = ({ children }: IAuthContextProps) => {
 				login,
 				signUp,
 				editUser,
+				editUserAddress,
 				deleteUser,
 			}}
 		>

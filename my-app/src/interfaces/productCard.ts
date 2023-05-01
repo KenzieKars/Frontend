@@ -1,5 +1,5 @@
-import { IAnnouncement } from "./announcement";
+import { IAnnouncement } from './announcement';
 
 export interface IProductCardProps {
-  announcement: IAnnouncement;
+	announcement: IAnnouncement;
 }

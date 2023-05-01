@@ -5,7 +5,6 @@ import {
 	DivButtonsModal,
 	DivHeaderModal,
 	StyledContent,
-	// StyledDescriptionTextarea,
 	StyledDivInputs,
 	StyledForm,
 	StyledModal,
@@ -89,11 +88,11 @@ export const CreateAdModal = () => {
 		);
 
 		if (newAd.combustivel === '1') {
-			newAd.combustivel = 'flex';
+			newAd.combustivel = 'Flex';
 		} else if (newAd.combustivel === '2') {
-			newAd.combustivel = 'híbrido';
+			newAd.combustivel = 'Híbrido';
 		} else {
-			newAd.combustivel = 'elétrico';
+			newAd.combustivel = 'Elétrico';
 		}
 
 		const createdNewAd = await createAd(newAd);

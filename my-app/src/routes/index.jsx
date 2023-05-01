@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router';
-import HomePage from '../pages/HomePage';
+import { HomePage } from '../pages/HomePage';
+import { LoginPage } from '../pages/Login';
 import RegisterPage from '../pages/Register';
-import LoginPage from '../pages/Login';
-import { UserPage } from '../pages/UserPage';
 import PasswordPage from '../pages/PasswordPage';
+import { UserPage } from '../pages/UserPage';
+import { ViewUserPage } from '../pages/ViewUserPage';
 import { AdPage } from '../pages/AdPage';
-import ViewUserPage from '../pages/ViewUserPage';
 import ResetPasswordPage from '../pages/ResetPasswordPage';
 
 export const RoutesMain = () => {

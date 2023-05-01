@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 export interface IBaseTitleProps {
-  tag: string;
-  className: string;
-  children: ReactNode;
+	tag: string;
+	className: string;
+	children: ReactNode;
 }
 
 export interface IThemeTitleProps {
-  titleSize: string;
+	titleSize: string;
 }
