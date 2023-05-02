@@ -4,6 +4,7 @@ export const Nav = styled.nav`
 	background-color: var(--color-grey10);
 
 	position: fixed;
+	top: 0;
 	z-index: 3;
 
 	display: flex;
@@ -19,13 +20,11 @@ export const Nav = styled.nav`
 	figure {
 		cursor: pointer;
 	}
-
-	@media (max-width: 768px) {
-		display: none;
-	}
 `;
 
 export const DivNavBarUser = styled.nav`
+	position: relative;
+
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
@@ -35,6 +34,15 @@ export const DivNavBarUser = styled.nav`
 	padding-left: 30px;
 
 	border-left: 2px solid #dee2e6;
+`;
+
+export const DivHeaderBtns = styled.div`
+	display: flex;
+	gap: 10px;
+
+	@media (max-width: 768px) {
+		display: none;
+	}
 `;
 
 export const DivUserInfo = styled.div`
@@ -75,5 +83,9 @@ export const DivUserInfo = styled.div`
 			color: var(--color-alert1);
 			transition: 0.5s;
 		}
+	}
+
+	@media (max-width: 768px) {
+		display: none;
 	}
 `;
