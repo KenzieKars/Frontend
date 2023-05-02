@@ -86,8 +86,7 @@ export const Div = styled.div`
 		}
 	}
 	.anuncios {
-		margin-left: 50px;
-		margin-bottom: 80px;
+		padding: 50px 100px;
 	}
 	.criarAnuncios {
 		border: 1.5px solid #4529e6;
@@ -119,15 +118,21 @@ export const Main = styled.main`
 export const Products = styled.div`
 	display: flex;
 	flex-wrap: wrap;
-	gap: 30px;
 	align-content: flex-start;
-	margin-left: 100px;
+	gap: 30px;
+
+	margin: 0 100px;
 
 	@media (max-width: 980px) {
 		flex-wrap: nowrap;
-		overflow: auto;
-		max-width: 809px;
-		margin-left: 20px;
+		overflow-x: scroll;
+
+		width: 100%;
+		padding-bottom: 14px;
+	}
+
+	@media (max-width: 510px) {
+		margin: 0 20px;
 	}
 `;
 export const Pagination = styled.div`

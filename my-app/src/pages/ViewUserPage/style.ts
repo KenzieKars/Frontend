@@ -89,8 +89,7 @@ export const Div = styled.div`
 		}
 	}
 	.anuncios {
-		margin-left: 50px;
-		margin-bottom: 80px;
+		padding: 0px 100px 50px 100px;
 	}
 	.criarAnuncios {
 		border: 1.5px solid #4529e6;
@@ -124,13 +123,18 @@ export const Products = styled.div`
 	flex-wrap: wrap;
 	align-content: flex-start;
 	gap: 30px;
-	margin-left: 100px;
+
+	margin: 0 100px;
 
 	@media (max-width: 980px) {
 		flex-wrap: nowrap;
-		overflow: auto;
-		max-width: 809px;
-		margin-left: 20px;
+		overflow-x: scroll;
+
+		width: 100%;
+	}
+
+	@media (max-width: 510px) {
+		margin: 0 20px;
 	}
 `;
 export const Pagination = styled.div`

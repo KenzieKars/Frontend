@@ -184,15 +184,21 @@ export const Aside = styled.aside`
 
 export const Products = styled.ul`
 	display: flex;
-	gap: 30px;
 	flex-wrap: wrap;
 	align-content: flex-start;
+	gap: 30px;
+
+	margin: 0 100px;
 
 	@media (max-width: 980px) {
 		flex-wrap: nowrap;
-		overflow: auto;
-		max-width: 809px;
-		margin-left: 20px;
+		overflow-x: scroll;
+
+		width: 100%;
+	}
+
+	@media (max-width: 510px) {
+		margin: 0 20px;
 	}
 `;
 

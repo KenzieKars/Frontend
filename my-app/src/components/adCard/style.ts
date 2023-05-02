@@ -10,6 +10,7 @@ export const StyledAdCard = styled.li`
 	gap: 10px;
 
 	width: 312px;
+	min-width: 312px;
 	height: fit-content;
 	min-height: 400px;
 

@@ -8,6 +8,7 @@ import { Container, Div, DivButtons, StyledAdvertiserLabel } from './style';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useContext, useState } from 'react';
+import { ThemeTitle } from '../../styles/typography';
 
 function RegisterPage() {
 	const { signUp } = useContext(AuthContext);
@@ -44,7 +45,9 @@ function RegisterPage() {
 			<NavBar />
 			<Container>
 				<h1>Cadastro</h1>
-				<p>Informações pessoais</p>
+				<ThemeTitle tag="h2" className="" titleSize="Heading-7-500">
+					Informações pessoais
+				</ThemeTitle>
 				<form onSubmit={handleSubmit(handleSignUp)}>
 					<Input
 						label="Nome"
@@ -105,7 +108,13 @@ function RegisterPage() {
 						{...register('imagem')}
 					/>
 					<p>{errors.imagem?.message}</p>
-					<p>Informações de endereço</p>
+					<ThemeTitle
+						tag="h2"
+						className="address"
+						titleSize="Heading-7-500"
+					>
+						Informações de endereço
+					</ThemeTitle>
 					<Input
 						label="CEP"
 						fieldName="cep"
@@ -113,6 +122,7 @@ function RegisterPage() {
 						placeholder="00000.000"
 						{...register('address.cep')}
 					/>
+					<p>{errors.address?.cep?.message}</p>
 					<Input
 						label="Estado"
 						fieldName="estado"
@@ -120,6 +130,7 @@ function RegisterPage() {
 						placeholder="Digitar Estado"
 						{...register('address.estado')}
 					/>
+					<p>{errors.address?.estado?.message}</p>
 					<Input
 						label="Cidade"
 						fieldName="cidade"
@@ -127,6 +138,7 @@ function RegisterPage() {
 						placeholder="Digitar cidade"
 						{...register('address.cidade')}
 					/>
+					<p>{errors.address?.cidade?.message}</p>
 					<Input
 						label="Rua"
 						fieldName="rua"
@@ -134,6 +146,7 @@ function RegisterPage() {
 						placeholder="Digitar rua"
 						{...register('address.rua')}
 					/>
+					<p>{errors.address?.rua?.message}</p>
 					<Input
 						label="Numero"
 						fieldName="numero"
@@ -141,6 +154,7 @@ function RegisterPage() {
 						placeholder="Digitar número"
 						{...register('address.numero')}
 					/>
+					<p>{errors.address?.numero?.message}</p>
 					<Input
 						label="Complemento"
 						fieldName="complemento"
@@ -148,6 +162,7 @@ function RegisterPage() {
 						placeholder="Ex: apart 307"
 						{...register('address.complemento')}
 					/>
+					<p>{errors.address?.complemento?.message}</p>
 					<StyledAdvertiserLabel>
 						Tipo de conta
 						<DivButtons>

@@ -1,13 +1,13 @@
 import Button from '../buttons';
-import MobileMenu from '../mobileMenu';
-import { DivNavBarUser, DivUserInfo, Nav } from './style';
+import { MobileMenu } from '../mobileMenu';
+import { DivHeaderBtns, DivNavBarUser, DivUserInfo, Nav } from './style';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../../contexts/UserContext';
 import { MenuButton } from '../alternativeMenu';
 import logo from '../../assets/logo.svg';
 import { api } from '../../services/api';
-import { IoLogOutOutline } from 'react-icons/io5';
+import { RiLogoutBoxLine } from 'react-icons/ri';
 
 export const NavBar = () => {
 	const { userInfo, setUserInfo, token, userId } = useContext(AuthContext);
@@ -56,7 +56,7 @@ export const NavBar = () => {
 				</figure>
 				<DivNavBarUser>
 					{!userInfo.id ? (
-						<>
+						<DivHeaderBtns>
 							<Button
 								backgroundColor="#ffffff"
 								backgroundColorHover="#212529"
@@ -81,37 +81,39 @@ export const NavBar = () => {
 							>
 								Cadastrar
 							</Button>
-						</>
+						</DivHeaderBtns>
 					) : (
-						<DivUserInfo>
-							<img src={userInfo.imagem} alt="user" />
-							<Button
-								backgroundColor="transparent"
-								backgroundColorHover="transparent"
-								border="transparent"
-								fontColor="var(--color-grey2)"
-								fontColorHover="var(--color-brand1)"
-								className="userBtn"
-								onClick={() => {
-									navigate('/user');
-								}}
-							>
-								{userInfo.nome}
-							</Button>
-							{location.pathname === '/user' ? (
-								<MenuButton />
-							) : (
-								<IoLogOutOutline
+						<>
+							<DivUserInfo>
+								<img src={userInfo.imagem} alt="user" />
+								<Button
+									backgroundColor="transparent"
+									backgroundColorHover="transparent"
+									border="transparent"
+									fontColor="var(--color-grey2)"
+									fontColorHover="var(--color-brand1)"
+									className="userBtn"
 									onClick={() => {
-										handleLogout();
+										navigate('/user');
 									}}
-								/>
-							)}
-						</DivUserInfo>
+								>
+									{userInfo.nome}
+								</Button>
+								{location.pathname === '/user' ? (
+									<MenuButton />
+								) : (
+									<RiLogoutBoxLine
+										onClick={() => {
+											handleLogout();
+										}}
+									/>
+								)}
+							</DivUserInfo>
+						</>
 					)}
+					<MobileMenu />
 				</DivNavBarUser>
 			</Nav>
-			<MobileMenu />
 		</>
 	);
 };
