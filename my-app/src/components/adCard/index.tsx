@@ -10,6 +10,7 @@ import {
 } from './style';
 import Button from '../buttons';
 import { useContext } from 'react';
+import { useEffect } from 'react';
 
 interface IProps {
 	ad: IAdInfo;
@@ -28,6 +29,7 @@ export const AdCard = (props: IProps) => {
 		setEditAdModal(true);
 		setSelectedAd(ad);
 	};
+
 
 	return (
 		<StyledAdCard key={index}>
@@ -55,7 +57,8 @@ export const AdCard = (props: IProps) => {
 				fontColor="var(--color-brand1)"
 				fontColorHover="var(--color-brand4)"
 				onClick={() => {
-					navigate('/adpage');
+					localStorage.setItem("usuarioAnuncio", 	ad.user.id)
+					navigate(`/adpage/${ad.id}`);
 				}}
 				type="button"
 				className="userBtn"

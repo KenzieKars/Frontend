@@ -17,7 +17,7 @@ export const RoutesMain = () => {
 			<Route path="/user" element={<UserPage />} />
 			<Route path="/password" element={<PasswordPage />} />
 			<Route path="/resetPassword" element={<ResetPasswordPage />} />
-			<Route path="/adpage" element={<AdPage />} />
+			<Route path="/adpage/:id" element={<AdPage />} />
 			<Route path="/user-view/:id" element={<ViewUserPage />} />
 		</Routes>
 	);
