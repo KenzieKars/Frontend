@@ -20,12 +20,57 @@ import {
 	StyledSuggestedComments,
 	StyledTagsDiv,
 } from './style';
-import mockedCar from '../../assets/mocked-car.svg';
 import Button from '../../components/buttons';
 import { ThemeTitle } from '../../styles/typography';
 import { Comment } from '../../components/comments';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { api } from '../../services/api';
 
 export const AdPage = () => {
+	const { id } = useParams();
+
+	const [anunciosInfo, setAnuncioInfo] = useState<any>([]) as any;
+	const [userInfo, setUserInfo] = useState<any>([]) as any;
+	const [userLogado, setUserLogado] = useState<any>([]) as any;
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		api.get(`/advertisement/${id}`)
+			.then((res) => {
+				setAnuncioInfo(res.data);
+			})
+			.catch((err) => {
+				navigate('/');
+			});
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	useEffect(() => {
+		let user = localStorage.getItem("usuarioAnuncio")
+		api.get(`/advertisement/users/${user}`)
+			.then((res) => {
+				setUserInfo(res.data[0].user);
+			})
+			.catch((err) => {
+				navigate('/');
+			});
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	useEffect(() => {
+		const token: string | null = localStorage.getItem("@user:Token")
+		const userId: string | null = localStorage.getItem('@user:ID');
+			api
+				.get(`/users/${userId}`, {
+					headers: { Authorization: `Bearer ${token}` },
+				})
+				.then((res) => {
+					setUserLogado(res.data.foundUserByParam);
+				})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	return (
 		<>
 			<NavBar />
@@ -33,7 +78,14 @@ export const AdPage = () => {
 				<StyledDivContentMain>
 					<StyledDivInfo>
 						<StyledDivBanner>
-							<img src={mockedCar} alt="mocked-car" />
+							{anunciosInfo.imagens?.map((imagem:string , index: number) => {
+								if(index === 0){
+									return(
+										<img src={imagem} alt="foto" />
+									)
+								}
+								return null
+							})}
 						</StyledDivBanner>
 						<StyledDivCarModel>
 							<ThemeTitle
@@ -41,14 +93,13 @@ export const AdPage = () => {
 								className=""
 								titleSize="Heading-6-600"
 							>
-								Mercedes Benz A 200 CGI ADVANCE SEDAN Mercedes
-								Benz A 200
+								{anunciosInfo.marca}  {anunciosInfo.modelo}
 							</ThemeTitle>
 							<StyledTagsDiv>
 								<div>
 									<StyledBtnsCarModel>
-										<StyledSpanTags>2013</StyledSpanTags>
-										<StyledSpanTags>0 KM</StyledSpanTags>
+										<StyledSpanTags>{anunciosInfo.ano}</StyledSpanTags>
+										<StyledSpanTags>{anunciosInfo.quilometragem} KM</StyledSpanTags>
 									</StyledBtnsCarModel>
 									<Button
 										backgroundColor="var(--color-brand2)"
@@ -70,7 +121,10 @@ export const AdPage = () => {
 										className=""
 										titleSize="Heading-7-500"
 									>
-										R$ 00.000,00
+									{`${parseFloat(anunciosInfo.preco).toLocaleString('pt-BR', {
+									style: 'currency',
+									currency: 'BRL',
+									})}`}
 									</ThemeTitle>
 								</div>
 							</StyledTagsDiv>
@@ -84,12 +138,7 @@ export const AdPage = () => {
 								Descrição
 							</ThemeTitle>
 							<p>
-								Lorem ipsum dolor sit amet consectetur
-								adipisicing elit. Provident praesentium
-								officiis, totam, possimus tempore eos omnis
-								distinctio consequuntur ullam quas nihil, at
-								maxime eligendi architecto numquam mollitia
-								sequi quidem quae?
+							{anunciosInfo.descricao}
 							</p>
 						</StyledDivCarDescription>
 					</StyledDivInfo>
@@ -103,30 +152,24 @@ export const AdPage = () => {
 								Fotos
 							</ThemeTitle>
 							<StyledImgsDiv>
-								<img src={mockedCar} alt="mocked-car" />
-								<img src={mockedCar} alt="mocked-car" />
-								<img src={mockedCar} alt="mocked-car" />
-								<img src={mockedCar} alt="mocked-car" />
-								<img src={mockedCar} alt="mocked-car" />
-								<img src={mockedCar} alt="mocked-car" />
+							{anunciosInfo.imagens?.map((imagem:string)=>{
+								return(
+									<img src={imagem} alt="foto" />
+								)
+							})}
 							</StyledImgsDiv>
 						</StyledDivAdPics>
 						<StyledDivDescProfile>
-							<span>SL</span>
+							<img src={userInfo.imagem} alt="user" />
 							<ThemeTitle
 								tag="h3"
 								className=""
 								titleSize="Heading-6-600"
 							>
-								Samuel Leão
+								{userInfo.nome}
 							</ThemeTitle>
 							<p>
-								Lorem ipsum dolor sit amet consectetur
-								adipisicing elit. Adipisci illum sint facere
-								quae. Placeat, sunt ullam! Omnis libero
-								asperiores provident, maxime dolore magni
-								aliquam error blanditiis eligendi quisquam
-								voluptatibus tenetur?
+								{userInfo.bio}
 							</p>
 							<Button
 								backgroundColor="var(--color-grey0)"
@@ -135,7 +178,7 @@ export const AdPage = () => {
 								borderHover=""
 								fontColor="var(--color-whiteFixed)"
 								fontColorHover=""
-								onClick={() => {}}
+								onClick={() => {navigate(`/`)}}
 								type="button"
 								className=""
 							>
@@ -156,16 +199,14 @@ export const AdPage = () => {
 				</StyledDivInteraction>
 				<StyledNewComment>
 					<StyledProfileComment>
-						<span>SL</span>
-						<span>Samuel Leão</span>
+						{userLogado? <img src={userLogado.imagem} alt="user" /> : null}
+						<span>{userLogado? userLogado.nome: null}</span>
 					</StyledProfileComment>
 					<div>
 						<StyledCommentTextarea
 							id="comment"
 							placeholder="Digitar comentário..."
-							rows={5}
-							cols={50}
-							maxLength={800}
+							type='text'
 						></StyledCommentTextarea>
 						<Button
 							backgroundColor="var(--color-brand2)"

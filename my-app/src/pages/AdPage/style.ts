@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const StyledDivContentMain = styled.div`
 	display: flex;
 	justify-content: space-between;
+	margin-top: 100px;
 
 	@media (max-width: 768px) {
 		align-items: center;
@@ -159,13 +160,17 @@ export const StyledDivDescProfile = styled.div`
 	flex-direction: column;
 	align-items: center;
 	gap: 10px;
-
+	img{
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		margin-bottom: 15px;
+	}
 	width: 100%;
 	height: fit-content;
 	padding: 30px;
 
 	border-radius: 4px;
-
 	span {
 		background-color: var(--color-brand1);
 		color: var(--color-grey10);
@@ -273,14 +278,15 @@ export const StyledProfileComment = styled.div`
 	}
 `;
 
-export const StyledCommentTextarea = styled.textarea`
+export const StyledCommentTextarea = styled.input`
 	color: var(--color-grey2);
+	display: flex;
 
 	resize: none;
-
 	width: 100%;
-	min-height: 100px;
 	padding: 30px 20px;
+	padding-top: 30px;
+	padding-bottom: 100px;
 
 	border: 1.5px solid var(--color-grey7);
 	border-radius: 4px;
@@ -290,12 +296,14 @@ export const StyledCommentTextarea = styled.textarea`
 	font-family: 'Inter';
 	font-style: normal;
 	line-height: 0px;
-
+	vertical-align: top;
 	+ button {
 		position: absolute;
 		right: 10px;
 		bottom: 10px;
+
 	}
+	
 `;
 
 export const StyledSuggestedComments = styled.ul`
