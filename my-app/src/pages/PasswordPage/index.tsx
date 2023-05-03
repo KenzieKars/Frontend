@@ -1,12 +1,9 @@
 import Button from '../../components/buttons';
 import { NavBar } from '../../components/navBar';
-import { Footer } from '../../components/footer';
-import { Container, Main, Div } from './style';
+import { Main, Div } from './style';
 import { Input } from '../../components/input';
 import { ThemeTitle } from '../../styles/typography';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
 import { api } from '../../services/api';
 
 function PasswordPage() {

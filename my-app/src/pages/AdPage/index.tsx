@@ -26,6 +26,14 @@ import { Comment } from '../../components/comments';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
+import {
+	StyledComment,
+	StyledCommentContent,
+	StyledCommentDetail,
+	StyledCommentLog,
+	StyledUserName,
+	StyledUserTag,
+} from './style';
 
 export const AdPage = () => {
 	const { id } = useParams();
@@ -33,6 +41,7 @@ export const AdPage = () => {
 	const [anunciosInfo, setAnuncioInfo] = useState<any>([]) as any;
 	const [userInfo, setUserInfo] = useState<any>([]) as any;
 	const [userLogado, setUserLogado] = useState<any>([]) as any;
+	const [comments, setComments] = useState<any>([]) as any;
 
 	const navigate = useNavigate();
 
@@ -67,6 +76,18 @@ export const AdPage = () => {
 				})
 				.then((res) => {
 					setUserLogado(res.data.foundUserByParam);
+				})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	useEffect(() => {
+			api
+				.get(`/comentario/${id}`)
+				.then((res) => {
+					setComments(res.data)
+				})
+				.catch((err)=>{
+					console.log(err)
 				})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -160,7 +181,7 @@ export const AdPage = () => {
 							</StyledImgsDiv>
 						</StyledDivAdPics>
 						<StyledDivDescProfile>
-							<img src={userInfo.imagem} alt="user" />
+						{userLogado && Object.keys(userLogado).length > 0 && <img src={userLogado.imagem} alt="user" />}
 							<ThemeTitle
 								tag="h3"
 								className=""
@@ -192,15 +213,31 @@ export const AdPage = () => {
 						Comentários
 					</ThemeTitle>
 					<ul>
-						<Comment />
-						<Comment />
-						<Comment />
+						{ comments ? comments.map((obj:any)=>{
+							const date2 = new Date(obj.created_at)
+							const date:Date = new Date()
+
+							let dia = (date2.getDate() - date.getDate())
+							return(
+								<StyledComment>
+									<StyledCommentContent>
+										<img className='img' src={obj.user.imagem} alt="user" />
+										<StyledUserName>{obj.user.nome}</StyledUserName>
+										<StyledCommentLog> - há {dia} dias</StyledCommentLog>
+									</StyledCommentContent>
+									<StyledCommentDetail>
+										{obj.comentario}
+									</StyledCommentDetail>
+								</StyledComment>
+							)
+						}) : null}
 					</ul>
 				</StyledDivInteraction>
 				<StyledNewComment>
 					<StyledProfileComment>
-						{userLogado? <img src={userLogado.imagem} alt="user" /> : null}
-						<span>{userLogado? userLogado.nome: null}</span>
+					{userLogado && Object.keys(userLogado).length > 0 && <img src={userLogado.imagem} alt="user" />}
+					{userLogado && Object.keys(userLogado).length > 0 && <span>{userLogado.nome}</span>}
+
 					</StyledProfileComment>
 					<div>
 						<StyledCommentTextarea
@@ -215,7 +252,25 @@ export const AdPage = () => {
 							borderHover=""
 							fontColor="var(--color-whiteFixed)"
 							fontColorHover=""
-							onClick={() => {}}
+							onClick={() => {
+								let input = document.getElementById("comment") as HTMLTextAreaElement
+								const token: string | null = localStorage.getItem("@user:Token")
+								let data = {
+									comentario: input.value
+								}
+								api
+									.post(`/comentario/${id}`, data, {
+										headers: { Authorization: `Bearer ${token}` },
+									})
+									.then((res) => {
+										console.log(res.data)
+									})
+									.catch((err)=>{
+										console.log(err)
+										navigate("/login")
+									})
+			
+							}}
 							type="button"
 							className=""
 						>
@@ -223,9 +278,18 @@ export const AdPage = () => {
 						</Button>
 					</div>
 					<StyledSuggestedComments>
-						<li>Gostei muito!</li>
-						<li>Incrível</li>
-						<li>Recomendarei para meus amigos!</li>
+						<li onClick={()=>{
+							let input = document.getElementById("comment") as HTMLTextAreaElement
+							input.value = "Gostei muito!"
+						}}>Gostei muito!</li>
+						<li onClick={()=>{
+							let input = document.getElementById("comment") as HTMLTextAreaElement
+							input.value = "Incrível"
+						}}>Incrível</li>
+						<li onClick={()=>{
+							let input = document.getElementById("comment") as HTMLTextAreaElement
+							input.value = "Recomendarei para meus amigos!!"
+						}}>Recomendarei para meus amigos!</li>
 					</StyledSuggestedComments>
 				</StyledNewComment>
 			</Main>
