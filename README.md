@@ -1,4 +1,4 @@
-# Motors Shop
+# Motors Shop 🚗
 
 Motors Shop é um e-commerce de veículos que permite que os usuários se cadastrem como vendedores ou compradores, publiquem, editem e excluam anúncios, filtrem os tipos de busca, visualizem outros perfis de vendedores e seus respectivos anúncios, entre outras funcionalidades.
 
@@ -35,29 +35,33 @@ Você também poderá visualizar erros de lint no console.
 ## Como o projeto está estruturado
 
 ```
-my-app\
-├── README.md\
-├── node_modules\
-├── package.json\
-├── .gitignore\
-├── public\
-│ ├── favicon.ico
-│ ├── index.html
-│ └── manifest.json
-└── src
-├── App.css
-├── App.js
-├── App.test.js
-├── index.css
-├── index.js
-├── logo.svg
-└── serviceWorker.js
-└── setupTests.js
+my-app
+├── 📁 node_modules ➡️ Dependências instaladas pelo yarn.
+├── 📁 public ➡️ Arquivos estáticos públicos.
+├── 📂 src ➡️ Código fonte do projeto.
+│   ├── 📁 assets ➡️ Arquivos estáticos como imagens, fontes e etc.
+│   ├── 📁 components ➡️ Componentes React reutilizáveis.
+│   ├── 📁 contexts ➡️ Contextos React para compartilhamento de dados.
+│   ├── 📁 interfaces ➡️ Interfaces TypeScript do projeto.
+│   ├── 📁 pages ➡️ Páginas principais da aplicação.
+│   ├── 📁 routes ➡️ Definições de rotas da aplicação.
+│   ├── 📁 serializers ➡️ Serializações dos formulários.
+│   ├── 📁 services ➡️ Configuração das APIs externas.
+│   ├── 📁 styles ➡️ Arquivos de estilização do projeto.
+│   ├── 📁 util ➡️ Configurações utilitárias.
+│   ├── App.tsx ➡️ Componente principal.
+│   ├── index.tsx ➡️ Inicia o aplicativo e o renderiza na página HTML.
+│   └── react-app-env.d.ts ➡️ Permite ao TypeScript reconhecer variáveis globais.
+├── .gitignore ➡️ Arquivo que devem ser ignorados pelo Git.
+├── package.json ➡️ Informações do projeto e as dependências utilizadas.
+├── README.md ➡️ Documentação do projeto.
+├── tsconfig.json ➡️ Configuração do TypeScript.
+├── yarn-error.log ➡️ Gerado pelo yarn.
+└── yarn.lock ➡️ Gerado pelo yarn.
 ```
 
-## Learn More
+## Saiba mais
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Você pode conhecer mais em [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
+Para aprender React, veja [React documentation](https://reactjs.org/).
