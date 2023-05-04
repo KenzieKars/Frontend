@@ -34,12 +34,13 @@ Você também poderá visualizar erros de lint no console.
 
 ## Como o projeto está estruturado
 
-my-app
-├── README.md
-├── node_modules
-├── package.json
-├── .gitignore
-├── public
+```
+my-app\
+├── README.md\
+├── node_modules\
+├── package.json\
+├── .gitignore\
+├── public\
 │ ├── favicon.ico
 │ ├── index.html
 │ └── manifest.json
@@ -52,6 +53,7 @@ my-app
 ├── logo.svg
 └── serviceWorker.js
 └── setupTests.js
+```
 
 ## Learn More
 
