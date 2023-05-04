@@ -60,6 +60,48 @@ my-app
 └── yarn.lock ➡️ Gerado pelo yarn.
 ```
 
+## Funcionalidades
+
+1. Cadastro de Usuário\
+   O usuário pode se cadastrar como vendedor ou comprador, fornecendo as informações necessárias.
+
+2. Edição e Exclusão de Perfil\
+   O usuário pode editar ou excluir sua própria conta, caso queira.
+
+3. Publicação de Anúncios\
+   O vendedor pode publicar um novo anúncio de veículo, fornecendo as informações necessárias, como modelo, ano, preço, fotos, descrição, entre outras.
+
+4. Edição e Exclusão de Anúncios\
+   O vendedor pode editar ou excluir seus próprios anúncios, caso necessário.
+
+5. Filtro de Busca\
+   O comprador pode filtrar a busca de veículos por diversos critérios, como marca, modelo, ano, preço, entre outros.
+
+6. Visualização de Perfis de Vendedores\
+   O comprador pode visualizar o perfil de outros vendedores, incluindo seus anúncios ativos e informações de contato.
+
+## Tecnologias 💻
+
+-   **React**
+    -   React Router DOM
+    -   React Hook Form
+    -   React Icons
+-   **TypeScript**
+-   **Axios**
+-   **CORS**
+-   **JSON Web Token (JWT)**
+    -   Decode
+-   **Yup**
+-   **Styled Components**
+
+## Créditos 👨‍💻
+
+-   Mickel Barros [:octocat:](https://github.com/Mickel-Barros)
+-   Felipe Bravo [:octocat:](https://github.com/felipebravo)
+-   Lucas Cruz [:octocat:](https://github.com/LucasCruz0103)
+-   Wesley Carvalho [:octocat:](https://github.com/wesCarv)
+-   Marcela Ferreira [:octocat:](https://github.com/wesCarv)
+
 ## Saiba mais
 
 Você pode conhecer mais em [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
