@@ -100,7 +100,7 @@ my-app
 -   Felipe Bravo [:octocat:](https://github.com/felipebravo)
 -   Lucas Cruz [:octocat:](https://github.com/LucasCruz0103)
 -   Wesley Carvalho [:octocat:](https://github.com/wesCarv)
--   Marcela Ferreira [:octocat:](https://github.com/wesCarv)
+-   Marcela Ferreira [:octocat:](https://github.com/mamadipaula)
 
 ## Saiba mais
 
