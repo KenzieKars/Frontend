@@ -51,7 +51,7 @@ export const AdPage = () => {
 				setAnuncioInfo(res.data);
 			})
 			.catch((err) => {
-				navigate('/');
+				/* navigate('/'); */
 			});
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -59,6 +59,7 @@ export const AdPage = () => {
 		let user = localStorage.getItem("usuarioAnuncio")
 		api.get(`/advertisement/users/${user}`)
 			.then((res) => {
+				
 				setUserInfo(res.data[0].user);
 			})
 			.catch((err) => {
@@ -84,9 +85,11 @@ export const AdPage = () => {
 			api
 				.get(`/comentario/${id}`)
 				.then((res) => {
+					setAnuncioInfo(res.data[0].announcements)
 					setComments(res.data)
 				})
 				.catch((err)=>{
+					navigate('/');
 					console.log(err)
 				})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
