@@ -1,43 +1,57 @@
-# Getting Started with Create React App
+# Motors Shop
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Motors Shop é um e-commerce de veículos que permite que os usuários se cadastrem como vendedores ou compradores, publiquem, editem e excluam anúncios, filtrem os tipos de busca, visualizem outros perfis de vendedores e seus respectivos anúncios, entre outras funcionalidades.
 
-## Available Scripts
+## Como executar o projeto
 
-In the project directory, you can run:
+### Setup de ambiente:
 
-### `yarn start`
+-   [Yarn](https://classic.yarnpkg.com/en/docs/install#windows-stable)
+-   [Node LTS](https://nodejs.org/en/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Como rodar na minha máquina?
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+-   Clone o projeto `https://github.com/KenzieKars/Frontend.git`;
+-   Execute o comando `yarn install` no diretório do projeto para instalar todas as dependências necessárias;
+-   Execute o comando `yarn start dev` no diretório do projeto para rodar a aplicação em modo de desenvolvedor;
+-   Abra [http://localhost:3000](http://localhost:3000) para visualizar no navegador;
+-   Pronto 🎉
 
-### `yarn test`
+**Como realizar contribuições para o projeto?**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-   Execute o comando `git checkout -b <nome-da-nova-branch> develop` no diretório do projeto para criar uma nova branch;
+-   Realize um commit convencional das alterações realizadas `git commit -m "feat: <descrição-do-commit>`
+-   Execute o comando `git push origin <sua-branch>` para enviar as contribuições.
+-   Pronto 🎉
 
-### `yarn build`
+### `yarn start dev`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Executa a aplicação em modo de desenvolvimento.\
+Abra [http://localhost:3000](http://localhost:3000) para visualizar no navegador.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+A página será recarregada se você fizer edições.\
+Você também poderá visualizar erros de lint no console.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Como o projeto está estruturado
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+my-app
+├── README.md
+├── node_modules
+├── package.json
+├── .gitignore
+├── public
+│ ├── favicon.ico
+│ ├── index.html
+│ └── manifest.json
+└── src
+├── App.css
+├── App.js
+├── App.test.js
+├── index.css
+├── index.js
+├── logo.svg
+└── serviceWorker.js
+└── setupTests.js
 
 ## Learn More
 
