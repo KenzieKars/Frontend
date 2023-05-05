@@ -45,16 +45,7 @@ export const AdPage = () => {
 
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		api.get(`/advertisement/${id}`)
-			.then((res) => {
-				setAnuncioInfo(res.data);
-			})
-			.catch((err) => {
-				/* navigate('/'); */
-			});
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+
 	useEffect(() => {
 		let user = localStorage.getItem("usuarioAnuncio")
 		api.get(`/advertisement/users/${user}`)

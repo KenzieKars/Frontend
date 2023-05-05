@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 export const Div = styled.div`
 	background-color: var(--color-grey8);
-
 	position: absolute;
 	top: 0;
 	left: 0;
