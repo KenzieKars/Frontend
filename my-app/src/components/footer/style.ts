@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 export const ContainerF = styled.footer`
 	width: 100%;
-
 	div {
 		width: 100%;
 		height: 100px;
+		bottom: 0;
 
 		display: flex;
 		justify-content: space-between;
