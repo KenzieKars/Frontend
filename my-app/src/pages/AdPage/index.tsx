@@ -45,6 +45,17 @@ export const AdPage = () => {
 
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		api.get(`/advertisement/${id}`)
+			.then((res) => {
+				console.log(res.data)
+				setAnuncioInfo(res.data)
+			})
+			.catch((err) => {
+				console.log(err)
+			});
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		let user = localStorage.getItem("usuarioAnuncio")
@@ -76,7 +87,6 @@ export const AdPage = () => {
 			api
 				.get(`/comentario/${id}`)
 				.then((res) => {
-					setAnuncioInfo(res.data[0].announcements)
 					setComments(res.data)
 				})
 				.catch((err)=>{

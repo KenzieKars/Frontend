@@ -20,7 +20,9 @@ export const Container = styled.div`
 	width: 404px;
 	height: fit-content;
 	padding: 44px 23px;
-	margin: 160px auto 80px;
+	margin: 0 auto;
+	margin-top: 150px;
+	margin-bottom: 200px;
 
 	border-radius: 4px;
 
