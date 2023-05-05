@@ -54,7 +54,7 @@ export const AdPage = () => {
 				setUserInfo(res.data[0].user);
 			})
 			.catch((err) => {
-				navigate('/');
+				console.log(err)
 			});
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -80,7 +80,6 @@ export const AdPage = () => {
 					setComments(res.data)
 				})
 				.catch((err)=>{
-					navigate('/');
 					console.log(err)
 				})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
