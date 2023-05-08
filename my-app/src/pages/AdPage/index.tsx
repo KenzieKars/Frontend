@@ -49,21 +49,24 @@ export const AdPage = () => {
 	useEffect(() => {
 		api.get(`/advertisement/${id}`)
 			.then((res) => {
-				setAnuncioInfo(res.data);
+				console.log(res.data)
+				setAnuncioInfo(res.data)
 			})
 			.catch((err) => {
-				navigate('/');
+				console.log(err)
 			});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
 	useEffect(() => {
 		let user = localStorage.getItem('usuarioAnuncio');
 		api.get(`/advertisement/users/${user}`)
 			.then((res) => {
+				
 				setUserInfo(res.data[0].user);
 			})
 			.catch((err) => {
-				navigate('/');
+				console.log(err)
 			});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

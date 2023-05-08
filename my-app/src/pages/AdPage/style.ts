@@ -99,6 +99,7 @@ export const StyledTagsDiv = styled.div`
 export const StyledBtnsCarModel = styled.div`
 	display: flex;
 	justify-content: space-between;
+	width: 184px;
 `;
 
 export const StyledSpanTags = styled.span`

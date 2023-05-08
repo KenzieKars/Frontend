@@ -6,6 +6,3 @@ const api = axios.create({
 });
 
 export { api };
-
-//
-//http://localhost:3000
