@@ -19,7 +19,7 @@ export const NavBar = () => {
 		window.localStorage.removeItem('@user:Token');
 		window.localStorage.removeItem('@user:ID');
 
-		navigate('/');
+		document.location.reload();
 	};
 
 	useEffect(() => {
