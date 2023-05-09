@@ -323,6 +323,33 @@ export const StyledTagsDiv = styled.div`
 	align-items: center;
 
 	text-align: center;
+
+	.buyBtn {
+		width: 100%;
+	}
+
+	.link {
+		text-decoration: none;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		height: 48px;
+		padding: 0 1.5rem;
+
+		font-family: Inter;
+		font-size: 14px;
+		font-weight: 600;
+		white-space: nowrap;
+
+		background: var(--color-brand2);
+		color: var(--color-whiteFixed);
+
+		border-radius: 4px;
+		border: 1px solid;
+		cursor: pointer;
+	}
 `;
 
 export const StyledBtnsCarModel = styled.div`
@@ -336,7 +363,7 @@ export const StyledSpanTags = styled.span`
 
 	color: var(--color-brand1);
 
-	width: 50%;
+	width: fit-content;
 	padding: 0.25rem 0.5rem;
 	margin: 10px 1px;
 
@@ -416,7 +443,7 @@ export const StyledDivDescProfile = styled.div`
 	flex-direction: column;
 	align-items: center;
 	gap: 10px;
-	img{
+	img {
 		width: 100px;
 		height: 100px;
 		border-radius: 50%;
@@ -562,9 +589,7 @@ export const StyledCommentTextarea = styled.input`
 		position: absolute;
 		right: 10px;
 		bottom: 10px;
-
 	}
-	
 `;
 
 export const StyledSuggestedComments = styled.ul`
@@ -618,7 +643,7 @@ export const StyledCommentContent = styled.div`
 		height: 15px;
 	}
 	
-	
+
 `;
 
 export const StyledUserTag = styled.span`
