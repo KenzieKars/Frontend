@@ -76,8 +76,8 @@ export const Main = styled.main`
   h3 {
     color: rgb(69, 41, 230);
     font-family: Lexend, sans-serif;
-    font-size: 20px;
-	margin-left:3rem;
+    font-size: 25px;
+	margin:0 auto;
 	text-align: center;
   }
 `;
