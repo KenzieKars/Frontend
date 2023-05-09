@@ -19,6 +19,9 @@ import {
 	StyledSpanTags,
 	StyledSuggestedComments,
 	StyledTagsDiv,
+	Dark,
+	StyledModal,
+	
 } from './style';
 import Button from '../../components/buttons';
 import { ThemeTitle } from '../../styles/typography';
@@ -41,6 +44,8 @@ export const AdPage = () => {
 	const [userInfo, setUserInfo] = useState<any>([]) as any;
 	const [userLogado, setUserLogado] = useState<IUserInfo | null>(null);
 	const [comments, setComments] = useState<any>([]) as any;
+	const [commentId, setCurrentComment] = useState<string>("");
+	
 
 	const [whatsAppLink, setWhatsAppLink] = useState<string>('');
 
@@ -49,7 +54,7 @@ export const AdPage = () => {
 	useEffect(() => {
 		api.get(`/advertisement/${id}`)
 			.then((res) => {
-				console.log(res.data)
+
 				setAnuncioInfo(res.data)
 			})
 			.catch((err) => {
@@ -96,6 +101,117 @@ export const AdPage = () => {
 	return (
 		<>
 			<NavBar />
+			<StyledModal>
+				<div className='none4'>
+					<div className='none5' onClick={(event: any)=>{
+						let div = document.querySelector(".content")
+						if(event.target===div){
+							return
+						}
+						if(event.target.parentElement === div){
+							return
+						}
+						else{
+							let close = document.querySelector(".overlay")
+							let close2 = document.querySelector(".modal")
+							if(close && close2){
+								close.className="none5"
+								close2.className="none4"
+							}
+						}
+					}}>
+						<div className='content'>
+							<button className='fechar' onClick={()=>{
+								let close = document.querySelector(".overlay")
+								let close2 = document.querySelector(".modal")
+								if(close && close2){
+									close.className="none5"
+									close2.className="none4"
+								}
+							}}>x</button>
+							<p>Deseja editar seu comentário?</p>
+							
+							<input className='editCom' type="text" placeholder='Digite aqui seu comentário'/>
+							<button className='send' onClick={()=>{
+								let comment = document.querySelector(".editCom") as HTMLFormElement
+								let data = {comentario: comment.value}
+								const token: string | null = localStorage.getItem("@user:Token")
+								api
+								.patch(`/comentario/${commentId}`, data, {
+									headers: { Authorization: `Bearer ${token}` },
+								})
+								.then((res) => {
+									document.location.reload();
+								})
+								.catch((err)=>{
+									console.log(err)
+								})
+							}}>Editar</button>
+						</div>
+					</div>
+				</div>
+				</StyledModal>
+				<StyledModal>
+					<div className='none2'>
+						<div className='none3' onClick={(event:any)=>{
+						let div = document.querySelector(".content2")
+						console.log(event.target, div)
+						if(event.target===div){
+			
+							return
+						}
+						if(event.target.parentElement === div){
+							return
+						}
+						if(event.target.parentElement.parentElement === div){
+							return
+						}
+						else{
+							let close = document.querySelector(".overlay")
+							let close2 = document.querySelector(".modal")
+							if(close && close2){
+								close.className="none3"
+								close2.className="none2"
+							}
+						}
+					}}>
+					<div className='content2'>
+					<button className='fechar' onClick={()=>{
+						let close = document.querySelector(".overlay")
+						let close2 = document.querySelector(".modal")
+						if(close && close2){
+							close.className="none3"
+							close2.className="none2"
+						}
+					}}>x</button>
+					<p>Deseja realmente deletar seu comentário?</p>
+					<div className='btns'>
+						<button className='send' onClick={()=>{
+							const token: string | null = localStorage.getItem("@user:Token")
+							api
+							.delete(`/comentario/${commentId}`, {
+								headers: { Authorization: `Bearer ${token}` },
+							})
+							.then((res) => {
+								document.location.reload();
+							})
+							.catch((err)=>{
+								console.log(err)
+							})
+						}}>Sim</button>
+						<button className='send' onClick={()=>{
+						let close = document.querySelector(".overlay")
+						let close2 = document.querySelector(".modal")
+						if(close && close2){
+							close.className="none3"
+							close2.className="none2"
+						}
+					}}>Não</button>
+					</div>
+				</div>
+						</div>
+					</div>
+				</StyledModal>
 			<Main>
 				<StyledDivContentMain>
 					<StyledDivInfo>
@@ -250,34 +366,56 @@ export const AdPage = () => {
 						Comentários
 					</ThemeTitle>
 					<ul>
-						{comments &&
-							comments.map((obj: any) => {
-								const date2 = new Date(obj.created_at);
-								const date: Date = new Date();
 
-								let dia = date2.getDate() - date.getDate();
-								return (
-									<StyledComment>
-										<StyledCommentContent>
-											<img
-												className="img"
-												src={obj.user.imagem}
-												alt="user"
-											/>
-											<StyledUserName>
-												{obj.user.nome}
-											</StyledUserName>
-											<StyledCommentLog>
-												{' '}
-												- há {dia} dias
-											</StyledCommentLog>
-										</StyledCommentContent>
-										<StyledCommentDetail>
-											{obj.comentario}
-										</StyledCommentDetail>
-									</StyledComment>
-								);
-							})}
+						{ comments ? comments.map((obj:any)=>{
+							const date2 = new Date(obj.created_at)
+							const date:Date = new Date()
+							let dia = (date2.getDate() - date.getDate())
+							return(
+								<StyledComment>
+									<StyledCommentContent>
+										<img className='img' src={obj.user.imagem} alt="user" />
+										<StyledUserName>{obj.user.nome}</StyledUserName>
+										<StyledCommentLog> - há {dia + 2*dia} dias</StyledCommentLog>
+										{obj.editado?<StyledCommentLog>&#40;editado&#41;</StyledCommentLog> : null}
+										
+										{userLogado && Object.keys(userLogado).length > 0 && obj.user.id === userLogado.id &&
+										<div className='div'>
+											<button onClick={()=>{
+
+												setCurrentComment(obj.id)
+												let modal2 = document.querySelector(".none4")
+												let modal3 = document.querySelector(".none5")
+												if(modal2 && modal3){
+													modal2.className="modal"
+													modal3.className="overlay"
+												}
+											}}>
+												<img className='edit' src="https://cdn-icons-png.flaticon.com/512/176/176318.png" alt="editar" />
+											</button>
+											<button onClick={()=>{
+												setCurrentComment(obj.id)
+												let modal2 = document.querySelector(".none2")
+												let modal3 = document.querySelector(".none3")
+												if(modal2 && modal3){
+													modal2.className="modal"
+													modal3.className="overlay"
+												}
+											}}>
+												<img className='edit' src="https://cdn-icons-png.flaticon.com/512/18/18297.png" alt="excluir" />
+											</button>
+										</div>
+										}
+
+										
+									</StyledCommentContent>
+									<StyledCommentDetail>
+										{obj.comentario}
+									</StyledCommentDetail>
+								</StyledComment>
+							)
+						}) : null}
+
 					</ul>
 				</StyledDivInteraction>
 				<StyledNewComment>
@@ -317,11 +455,11 @@ export const AdPage = () => {
 									},
 								})
 									.then((res) => {
-										console.log(res.data);
+										document.location.reload();
 									})
-									.catch((err) => {
-										console.log(err);
-										navigate('/login');
+									.catch((err)=>{
+										console.log(err)
+										navigate("/login")
 									});
 							}}
 							type="button"
