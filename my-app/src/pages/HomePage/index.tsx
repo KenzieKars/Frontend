@@ -524,21 +524,25 @@ export const HomePage = () => {
 					</div>
 				</Aside>
 				<Products>
-					{anunciosInfo.map((anuncio: IAdInfo, index) => {
-						if (filter === '') {
-							return <AdCard ad={anuncio} index={index} />;
-						} else if (filter === anuncio.marca) {
-							return <AdCard ad={anuncio} index={index} />;
-						} else if (filter === anuncio.modelo) {
-							return <AdCard ad={anuncio} index={index} />;
-						} else if (filter === anuncio.cor) {
-							return <AdCard ad={anuncio} index={index} />;
-						} else if (filter === anuncio.ano) {
-							return <AdCard ad={anuncio} index={index} />;
-						} else if (filter === anuncio.combustivel) {
-							return <AdCard ad={anuncio} index={index} />;
-						}
-					})}
+					{anunciosInfo.length > 0 ?(
+
+						anunciosInfo.map((anuncio: IAdInfo, index) => {
+							if (filter === '') {
+								return <AdCard ad={anuncio} index={index} />;
+							} else if (filter === anuncio.marca) {
+								return <AdCard ad={anuncio} index={index} />;
+							} else if (filter === anuncio.modelo) {
+								return <AdCard ad={anuncio} index={index} />;
+							} else if (filter === anuncio.cor) {
+								return <AdCard ad={anuncio} index={index} />;
+							} else if (filter === anuncio.ano) {
+								return <AdCard ad={anuncio} index={index} />;
+							} else if (filter === anuncio.combustivel) {
+								return <AdCard ad={anuncio} index={index} />;
+							}
+						})
+
+						):<h3>Ainda sem anúncios...</h3>}
 				</Products>
 			</Main>
 			<div className="filtro">

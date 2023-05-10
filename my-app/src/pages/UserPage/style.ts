@@ -113,6 +113,13 @@ export const Main = styled.main`
 	#t {
 		display: none;
 	}
+
+	h1{
+		color: rgb(69, 41, 230);
+		font-family: Lexend, sans-serif;
+		font-size: 20px;
+		margin-left: 3rem;
+	}
 `;
 
 export const Products = styled.div`
