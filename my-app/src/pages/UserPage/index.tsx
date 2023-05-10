@@ -128,9 +128,12 @@ export const UserPage = () => {
 					</ThemeTitle>
 					<Main>
 						<Products>
-							{anunciosInfo.map((anuncio: IAdInfo, index) => {
-								return <AdCard ad={anuncio} index={index} />;
-							})}
+							{anunciosInfo.length > 0 ? (
+
+								anunciosInfo.map((anuncio: IAdInfo, index) => {
+									return <AdCard ad={anuncio} index={index} />;
+								})
+							):<h1>Ainda sem anúncios, mas não fique parado, crie o seu.</h1>}
 						</Products>
 					</Main>
 
